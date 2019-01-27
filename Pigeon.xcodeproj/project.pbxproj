@@ -7,23 +7,55 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		240050B021F057AE001F86E3 /* RegisterPNViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 240050AF21F057AE001F86E3 /* RegisterPNViewController.swift */; };
+		2400924621F829B800A45123 /* OneMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400923F21F829B600A45123 /* OneMessage.swift */; };
+		2400924721F829B800A45123 /* OneChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924021F829B600A45123 /* OneChats.swift */; };
+		2400924821F829B800A45123 /* OneRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924121F829B700A45123 /* OneRoom.swift */; };
+		2400924921F829B800A45123 /* OneChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924221F829B700A45123 /* OneChat.swift */; };
+		2400924A21F829B800A45123 /* OneRoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924321F829B700A45123 /* OneRoster.swift */; };
+		2400924B21F829B800A45123 /* OnePresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924421F829B700A45123 /* OnePresence.swift */; };
+		2400924C21F829B800A45123 /* OneLastActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924521F829B800A45123 /* OneLastActivity.swift */; };
+		2400FEAA21F5C29F0078EEB4 /* AES256CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400FEA921F5C29F0078EEB4 /* AES256CBC.swift */; };
+		2400FEAD21F5C6080078EEB4 /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400FEAC21F5C6080078EEB4 /* Urls.swift */; };
+		2411FE3221F07DF300CE9A2F /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2411FE3121F07DF300CE9A2F /* OTPViewController.swift */; };
 		24ADD1D321EEFD6400BB7BF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADD1D221EEFD6400BB7BF4 /* AppDelegate.swift */; };
-		24ADD1D521EEFD6400BB7BF4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADD1D421EEFD6400BB7BF4 /* ViewController.swift */; };
 		24ADD1D821EEFD6400BB7BF4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24ADD1D621EEFD6400BB7BF4 /* Main.storyboard */; };
 		24ADD1DB21EEFD6400BB7BF4 /* Pigeon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 24ADD1D921EEFD6400BB7BF4 /* Pigeon.xcdatamodeld */; };
 		24ADD1DD21EEFD6500BB7BF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24ADD1DC21EEFD6500BB7BF4 /* Assets.xcassets */; };
 		24ADD1E021EEFD6500BB7BF4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24ADD1DE21EEFD6500BB7BF4 /* LaunchScreen.storyboard */; };
+		24ADD1EA21EEFE8500BB7BF4 /* StartUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADD1E921EEFE8500BB7BF4 /* StartUpViewController.swift */; };
+		24D4A83C21F7485200BB03F3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A83B21F7485200BB03F3 /* Constants.swift */; };
+		24DE736621F332FF00C5FB6D /* CompleteInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DE736521F332FF00C5FB6D /* CompleteInfoViewController.swift */; };
+		24EA0FD721FC471500D49137 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EA0FD621FC471500D49137 /* Cryptography.swift */; };
+		A6EBE3C6306E0BBB17736C33 /* Pods_Pigeon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5875CAAB685B5E500AE7BB8 /* Pods_Pigeon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		240050AF21F057AE001F86E3 /* RegisterPNViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPNViewController.swift; sourceTree = "<group>"; };
+		2400923F21F829B600A45123 /* OneMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneMessage.swift; sourceTree = "<group>"; };
+		2400924021F829B600A45123 /* OneChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneChats.swift; sourceTree = "<group>"; };
+		2400924121F829B700A45123 /* OneRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoom.swift; sourceTree = "<group>"; };
+		2400924221F829B700A45123 /* OneChat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneChat.swift; sourceTree = "<group>"; };
+		2400924321F829B700A45123 /* OneRoster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoster.swift; sourceTree = "<group>"; };
+		2400924421F829B700A45123 /* OnePresence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnePresence.swift; sourceTree = "<group>"; };
+		2400924521F829B800A45123 /* OneLastActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneLastActivity.swift; sourceTree = "<group>"; };
+		2400FEA921F5C29F0078EEB4 /* AES256CBC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AES256CBC.swift; path = Pods/AES256CBC/Sources/AES256CBC.swift; sourceTree = SOURCE_ROOT; };
+		2400FEAC21F5C6080078EEB4 /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
+		2411FE3121F07DF300CE9A2F /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
 		24ADD1CF21EEFD6400BB7BF4 /* Pigeon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pigeon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24ADD1D221EEFD6400BB7BF4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		24ADD1D421EEFD6400BB7BF4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		24ADD1D721EEFD6400BB7BF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		24ADD1DA21EEFD6400BB7BF4 /* Pigeon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Pigeon.xcdatamodel; sourceTree = "<group>"; };
 		24ADD1DC21EEFD6500BB7BF4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24ADD1DF21EEFD6500BB7BF4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		24ADD1E121EEFD6500BB7BF4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		24ADD1E921EEFE8500BB7BF4 /* StartUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpViewController.swift; sourceTree = "<group>"; };
+		24D4A83B21F7485200BB03F3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		24DE736521F332FF00C5FB6D /* CompleteInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteInfoViewController.swift; sourceTree = "<group>"; };
+		24EA0FD621FC471500D49137 /* Cryptography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
+		6ED203663A966E93AF221666 /* Pods-Pigeon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pigeon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon.debug.xcconfig"; sourceTree = "<group>"; };
+		736D0F7D95A0EDE200CBBF0B /* Pods-Pigeon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pigeon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon.release.xcconfig"; sourceTree = "<group>"; };
+		A5875CAAB685B5E500AE7BB8 /* Pods_Pigeon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pigeon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +63,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6EBE3C6306E0BBB17736C33 /* Pods_Pigeon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2400FEAB21F5C5E70078EEB4 /* constants */ = {
+			isa = PBXGroup;
+			children = (
+				24D4A83B21F7485200BB03F3 /* Constants.swift */,
+				2400FEAC21F5C6080078EEB4 /* Urls.swift */,
+			);
+			path = constants;
+			sourceTree = "<group>";
+		};
 		24ADD1C621EEFD6400BB7BF4 = {
 			isa = PBXGroup;
 			children = (
 				24ADD1D121EEFD6400BB7BF4 /* Pigeon */,
 				24ADD1D021EEFD6400BB7BF4 /* Products */,
+				D163C44C8558B788038595A8 /* Pods */,
+				5F58F5FCBA1D7CF1F9FB70F4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,8 +100,12 @@
 		24ADD1D121EEFD6400BB7BF4 /* Pigeon */ = {
 			isa = PBXGroup;
 			children = (
+				24D4A82B21F7424F00BB03F3 /* lib */,
+				2400FEAB21F5C5E70078EEB4 /* constants */,
+				24DE736721F467BC00C5FB6D /* util */,
+				24ADD1E821EEFE4700BB7BF4 /* main */,
+				24ADD1E721EEFE2800BB7BF4 /* intoApp */,
 				24ADD1D221EEFD6400BB7BF4 /* AppDelegate.swift */,
-				24ADD1D421EEFD6400BB7BF4 /* ViewController.swift */,
 				24ADD1D621EEFD6400BB7BF4 /* Main.storyboard */,
 				24ADD1DC21EEFD6500BB7BF4 /* Assets.xcassets */,
 				24ADD1DE21EEFD6500BB7BF4 /* LaunchScreen.storyboard */,
@@ -67,6 +115,72 @@
 			path = Pigeon;
 			sourceTree = "<group>";
 		};
+		24ADD1E721EEFE2800BB7BF4 /* intoApp */ = {
+			isa = PBXGroup;
+			children = (
+				24ADD1E921EEFE8500BB7BF4 /* StartUpViewController.swift */,
+				240050AF21F057AE001F86E3 /* RegisterPNViewController.swift */,
+				2411FE3121F07DF300CE9A2F /* OTPViewController.swift */,
+				24DE736521F332FF00C5FB6D /* CompleteInfoViewController.swift */,
+			);
+			path = intoApp;
+			sourceTree = "<group>";
+		};
+		24ADD1E821EEFE4700BB7BF4 /* main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = main;
+			sourceTree = "<group>";
+		};
+		24D4A82B21F7424F00BB03F3 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				24D4A82C21F7425C00BB03F3 /* xmpp */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		24D4A82C21F7425C00BB03F3 /* xmpp */ = {
+			isa = PBXGroup;
+			children = (
+				2400924221F829B700A45123 /* OneChat.swift */,
+				2400924021F829B600A45123 /* OneChats.swift */,
+				2400924521F829B800A45123 /* OneLastActivity.swift */,
+				2400923F21F829B600A45123 /* OneMessage.swift */,
+				2400924421F829B700A45123 /* OnePresence.swift */,
+				2400924121F829B700A45123 /* OneRoom.swift */,
+				2400924321F829B700A45123 /* OneRoster.swift */,
+			);
+			path = xmpp;
+			sourceTree = "<group>";
+		};
+		24DE736721F467BC00C5FB6D /* util */ = {
+			isa = PBXGroup;
+			children = (
+				2400FEA921F5C29F0078EEB4 /* AES256CBC.swift */,
+				24EA0FD621FC471500D49137 /* Cryptography.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		5F58F5FCBA1D7CF1F9FB70F4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A5875CAAB685B5E500AE7BB8 /* Pods_Pigeon.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D163C44C8558B788038595A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6ED203663A966E93AF221666 /* Pods-Pigeon.debug.xcconfig */,
+				736D0F7D95A0EDE200CBBF0B /* Pods-Pigeon.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +188,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 24ADD1E421EEFD6500BB7BF4 /* Build configuration list for PBXNativeTarget "Pigeon" */;
 			buildPhases = (
+				5C68B2D1DC25733E036A8F8A /* [CP] Check Pods Manifest.lock */,
 				24ADD1CB21EEFD6400BB7BF4 /* Sources */,
 				24ADD1CC21EEFD6400BB7BF4 /* Frameworks */,
 				24ADD1CD21EEFD6400BB7BF4 /* Resources */,
+				EAE35A60C0593537BCEDFD4C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,14 +249,101 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		5C68B2D1DC25733E036A8F8A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Pigeon-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EAE35A60C0593537BCEDFD4C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AES256CBC/AES256CBC.framework",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
+				"${BUILT_PRODUCTS_DIR}/KissXML/KissXML.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SwCrypt/SwCrypt.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyRSA/SwiftyRSA.framework",
+				"${BUILT_PRODUCTS_DIR}/XMPPFramework/XMPPFramework.framework",
+				"${BUILT_PRODUCTS_DIR}/libidn/libidn.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AES256CBC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KissXML.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwCrypt.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyRSA.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XMPPFramework.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/libidn.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		24ADD1CB21EEFD6400BB7BF4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24ADD1D521EEFD6400BB7BF4 /* ViewController.swift in Sources */,
+				2400924B21F829B800A45123 /* OnePresence.swift in Sources */,
+				2411FE3221F07DF300CE9A2F /* OTPViewController.swift in Sources */,
+				2400FEAA21F5C29F0078EEB4 /* AES256CBC.swift in Sources */,
+				2400924C21F829B800A45123 /* OneLastActivity.swift in Sources */,
+				2400924921F829B800A45123 /* OneChat.swift in Sources */,
 				24ADD1DB21EEFD6400BB7BF4 /* Pigeon.xcdatamodeld in Sources */,
+				2400924821F829B800A45123 /* OneRoom.swift in Sources */,
+				2400FEAD21F5C6080078EEB4 /* Urls.swift in Sources */,
+				2400924721F829B800A45123 /* OneChats.swift in Sources */,
+				24EA0FD721FC471500D49137 /* Cryptography.swift in Sources */,
+				24D4A83C21F7485200BB03F3 /* Constants.swift in Sources */,
+				24ADD1EA21EEFE8500BB7BF4 /* StartUpViewController.swift in Sources */,
+				2400924A21F829B800A45123 /* OneRoster.swift in Sources */,
 				24ADD1D321EEFD6400BB7BF4 /* AppDelegate.swift in Sources */,
+				24DE736621F332FF00C5FB6D /* CompleteInfoViewController.swift in Sources */,
+				2400924621F829B800A45123 /* OneMessage.swift in Sources */,
+				240050B021F057AE001F86E3 /* RegisterPNViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +487,7 @@
 		};
 		24ADD1E521EEFD6500BB7BF4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6ED203663A966E93AF221666 /* Pods-Pigeon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -302,6 +506,7 @@
 		};
 		24ADD1E621EEFD6500BB7BF4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 736D0F7D95A0EDE200CBBF0B /* Pods-Pigeon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
