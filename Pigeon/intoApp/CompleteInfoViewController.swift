@@ -17,7 +17,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
     @IBOutlet weak var profileImageView: UIImageView!
     
     var doneBtn: UIBarButtonItem?
-//    let doneBtn = UIBarButtonItem(title: "Enjoy!", style: .plain, target: self, action: #selector(doneBtnTapped))
+    //    let doneBtn = UIBarButtonItem(title: "Enjoy!", style: .plain, target: self, action: #selector(doneBtnTapped))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +113,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
     
     
     func uploadProfilePicture(image: UIImage) {
-       
+        
         let imgData = image.jpegData(compressionQuality: 0.1)
         let parameters = ["number" : "0" + UserDefaults.standard.string(forKey: "Mobile")!]
         Alamofire.upload(multipartFormData: { multipartFormData in
@@ -153,7 +153,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = cypherParamsJson
         let session = URLSession.shared
-
+        
         session.dataTask(with: request) { (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
@@ -161,20 +161,30 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
                         do {
                             if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
                                 
-                                print(dictionary)
+                                if dictionary["secret"] != nil && dictionary["data"] != nil {
+                                    
+                                    let encrypted = try EncryptedMessage(base64Encoded: dictionary["secret"]!)
+                                    let privateKey = try PrivateKey(pemEncoded: UserDefaults.standard.value(forKey: "Client-PrivateKey")! as! String)
+                                    let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
+                                    
+                                    
+                                    let decryptedData = AES256CBC.decryptString(dictionary["data"]!, password: clearAESSecret)
+                                    let json = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
+                                    
+                                    //FIXME: add xmpp username and password to user-defaults
+                                    DispatchQueue.main.async {
+                                        let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
+                                        self.navigationController?.present(appMain, animated: true, completion: nil)
+                                    }
+                                }
                             }
                         } catch {
                             
                         }
                     }
-                    
-                    DispatchQueue.main.async {
-                        let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
-                        self.navigationController?.present(appMain, animated: true, completion: nil)
-                    }
-                    
+ 
                 } else {
-                   
+                    
                     DispatchQueue.main.async { [unowned self] in
                         let alertController = UIAlertController(title: "Error!", message: "Registration failed.", preferredStyle: .alert)
                         alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
@@ -183,7 +193,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
                     }
                 }
             }
-        }.resume()
+            }.resume()
         
         
     }
