@@ -89,10 +89,11 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
                                                 self.navigationController?.pushViewController(completeInfoVC, animated: true)
                                             }
                                         } else {
-                                            
-                                            //FIXME: check for xmpp params or token
-                                            //if valid, save them to user defaults and navigate to app main
-                                            if(1==1 ) {
+
+                                            if(res["username"] != nil && res["password"] != nil ) {
+                                                
+                                                UserDefaults.standard.set(res["username"], forKey: "XMPPUser")
+                                                UserDefaults.standard.set(res["password"], forKey: "XMPPPassword")
                                                 
                                                 DispatchQueue.main.async { [unowned self] in
                                                     let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
