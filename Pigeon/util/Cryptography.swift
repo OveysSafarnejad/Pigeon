@@ -24,10 +24,8 @@ class Cryptography {
         
         UserDefaults.standard.set(try! SwKeyConvert.PrivateKey.derToPKCS1PEM(privateKey.data()),
                                   forKey: "Client-PrivateKey")
-        
     }
-    
-    
+
     func generateAESKey() -> String {
         UserDefaults.standard.set(AES256CBC.generatePassword(), forKey: "AES-Key")
         return UserDefaults.standard.string(forKey: "AES-Key")!

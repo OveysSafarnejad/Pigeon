@@ -74,44 +74,62 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         session.dataTask(with: request) { (data, response, error) in
             
             if let httpResponse = response as? HTTPURLResponse {
-                
                 if httpResponse.statusCode == 200 {
-                    
                     if let data = data {
-                        
                         do {
                             if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
-                                
                                 if dictionary["secret"] != nil && dictionary["data"] != nil {
-                                    if self.openResponce(response: dictionary) {
-                                        
-                                        DispatchQueue.main.async { [unowned self] in
-                                            let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
-                                            self.navigationController?.present(appMain, animated: true, completion: nil)
+                                    let res = self.openResponce(response: dictionary)
+                                    
+                                    if let isRegistered = res["is_registered"] {
+                                        if (isRegistered == "false") {
+                                            
+                                            DispatchQueue.main.async { [unowned self] in
+                                                let completeInfoVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompleteInfoViewController") as! CompleteInfoViewController
+                                                self.navigationController?.pushViewController(completeInfoVC, animated: true)
+                                            }
+                                        } else {
+                                            
+                                            //FIXME: check for xmpp params or token
+                                            //if valid, save them to user defaults and navigate to app main
+                                            if(1==1 ) {
+                                                
+                                                DispatchQueue.main.async { [unowned self] in
+                                                    let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
+                                                    self.navigationController?.present(appMain, animated: true, completion: nil)
+                                                }
+                                                
+                                            } else {
+                                                DispatchQueue.main.async { [unowned self] in
+                                                    self.errorHandler(title: "Error!", message: "Can't connect, try again.")
+                                                }
+                                            }
                                         }
                                         
                                     } else {
                                         
                                         DispatchQueue.main.async { [unowned self] in
-                                            let completeInfoVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompleteInfoViewController") as! CompleteInfoViewController
-                                            self.navigationController?.pushViewController(completeInfoVC, animated: true)
+                                            self.errorHandler(title: "Error!", message: "Server response is invalid.")
                                         }
-                                        
+                                    }
+                                    
+                                } else {
+                                    DispatchQueue.main.async { [unowned self] in
+                                        self.errorHandler(title: "Error!", message: "Server response is invalid.")
                                     }
                                 }
                             }
-                            
                         } catch {
                             
+                            DispatchQueue.main.async { [unowned self] in
+                                self.errorHandler(title: "Error!", message: "Server response is invalid.")
+                            }
                         }
                     }
                 } else /* status code != 200 */ {
                     
                     DispatchQueue.main.async { [unowned self] in
-                        let alertController = UIAlertController(title: "Oops!", message: "Wrong OTP!", preferredStyle: .alert)
-                        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
-                        }))
-                        self.present(alertController, animated: true, completion: nil)
+                        self.errorHandler(title: "Oops!", message: "Wrong OTP!")
                     }
                 }
             }
@@ -142,25 +160,6 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         otpTextfield.attributedPlaceholder = NSAttributedString(string: "- - - - -", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(red: 0.0/255.0, green: 173.0/255.0, blue: 235.0/255.0, alpha: 0.5)])
     }
     
-    // generate key pairs for client and save them in defaults.
-//    func generateRSAKeys() {
-//
-//        let keyPair = try! SwiftyRSA.generateRSAKeyPair(sizeInBits: 2048)
-//        let privateKey = keyPair.privateKey
-//        let publicKey = keyPair.publicKey
-//
-//        UserDefaults.standard.set(try! SwKeyConvert.PublicKey.derToPKCS8PEM(publicKey.data()),
-//                                  forKey: "Client-PublicKey")
-//
-//        UserDefaults.standard.set(try! SwKeyConvert.PrivateKey.derToPKCS1PEM(privateKey.data()),
-//                                  forKey: "Client-PrivateKey")
-//
-//    }
-//
-//    func generateAESKey() {
-//        aesSecretKey = AES256CBC.generatePassword()
-//    }
-    
     func createRequestJson() -> Data {
         let cryptography = Cryptography()
         cryptography.generateRSAKeys()
@@ -185,29 +184,28 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         return try! JSONSerialization.data(withJSONObject: cypherParameters)
     }
     
-    func openResponce(response: [String: String]) -> Bool {
+    func openResponce(response: [String : String]) -> [String : String] {
         
-        
-        do{
+        do {
             let encrypted = try EncryptedMessage(base64Encoded: response["secret"]!)
             let privateKey = try PrivateKey(pemEncoded: UserDefaults.standard.value(forKey: "Client-PrivateKey")! as! String)
             let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
-            
-            
             let decryptedData = AES256CBC.decryptString(response["data"]!, password: clearAESSecret)
             let json = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
             
-            if json!["is_registered"] == "true" {
-                return true
-            } else {
-                return false
-            }
+            return json!
             
         } catch {
-            
+            return ["":""]
         }
+    }
+    
+    func errorHandler(title:String , message:String) {
         
-        return false
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
     
 }

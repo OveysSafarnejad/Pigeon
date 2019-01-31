@@ -29,6 +29,7 @@ open class OnePresence: NSObject {
     // MARK: Functions
     
     class func goOnline() {
+        
         let presence = XMPPPresence()
         let domain = OneChat.sharedInstance.xmppStream!.myJID!.domain
         

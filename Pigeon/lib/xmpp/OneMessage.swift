@@ -173,7 +173,7 @@ open class OneMessage: NSObject {
                         element = nil
                     }
                     
-                    if element.attributeStringValue(forName: "messageStr") == message as! String {
+                    if element.attributeStringValue(forName: "messageStr") == message as? String {
                         moc?.delete(message as! NSManagedObject)
                     }
                 }
@@ -195,7 +195,7 @@ extension OneMessage: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         
-        var user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
+        let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
     
         if !OneChats.knownUserForJid(jidStr:(user?.jidStr)!) {
             OneChats.addUserToChatList(jidStr: (user?.jidStr)!)

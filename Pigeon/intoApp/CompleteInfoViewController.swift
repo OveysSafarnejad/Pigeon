@@ -129,11 +129,10 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
                 upload.uploadProgress(closure: { (progress) in
                     print("Upload Progress: \(progress.fractionCompleted)")
                 })
-                
+
                 upload.responseJSON { response in
                     print(response.result.value!)
                 }
-                
             case .failure(let encodingError):
                 print(encodingError)
             }
@@ -162,19 +161,25 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
                             if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
                                 
                                 if dictionary["secret"] != nil && dictionary["data"] != nil {
-                                    
                                     let encrypted = try EncryptedMessage(base64Encoded: dictionary["secret"]!)
                                     let privateKey = try PrivateKey(pemEncoded: UserDefaults.standard.value(forKey: "Client-PrivateKey")! as! String)
                                     let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
-                                    
-                                    
                                     let decryptedData = AES256CBC.decryptString(dictionary["data"]!, password: clearAESSecret)
-                                    let json = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
+                                    let xmppResult = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
                                     
-                                    //FIXME: add xmpp username and password to user-defaults
-                                    DispatchQueue.main.async {
-                                        let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
-                                        self.navigationController?.present(appMain, animated: true, completion: nil)
+                                    if xmppResult!["username"] != nil && xmppResult!["password"] != nil {
+                                        UserDefaults.standard.set(xmppResult!["username"], forKey: "XMPPUser")
+                                        UserDefaults.standard.set(xmppResult!["password"], forKey: "XMPPPassword")
+                                        
+                                        DispatchQueue.main.async {
+                                            let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
+                                            self.navigationController?.present(appMain, animated: true, completion: nil)
+                                        }
+                                    } else{
+                                       
+                                        DispatchQueue.main.async { [unowned self] in
+                                            self.errorHandler(title: "Sorry!", message: "Can not connect to messaging service.")
+                                        }
                                     }
                                 }
                             }
@@ -186,10 +191,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
                 } else {
                     
                     DispatchQueue.main.async { [unowned self] in
-                        let alertController = UIAlertController(title: "Error!", message: "Registration failed.", preferredStyle: .alert)
-                        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
-                        }))
-                        self.present(alertController, animated: true, completion: nil)
+                        self.errorHandler(title: "Error!", message: "Registration failed.")
                     }
                 }
             }
@@ -224,5 +226,14 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
     
     @objc func doneBtnTapped() {
         sendInformationForRegistry()
+    }
+    
+    
+    func errorHandler(title:String , message:String) {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
+        }))
+        self.present(alertController, animated: true, completion: nil)
     }
 }

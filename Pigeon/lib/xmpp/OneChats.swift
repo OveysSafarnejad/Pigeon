@@ -79,8 +79,6 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
                     sender = (message as AnyObject).bareJidStr;
                     thread = (message as! XMPPMessageArchiving_Message_CoreDataObject).thread
                     
-                    print(sender, "----", thread);
-                    
                     if let chats = archivedMessage.object(forKey: thread) {
                         
                         if !(chats as AnyObject).contains(sender) {
