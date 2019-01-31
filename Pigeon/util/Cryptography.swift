@@ -9,7 +9,6 @@
 import Foundation
 import SwiftyRSA
 import SwCrypt
-import AES256CBC
 
 class Cryptography {
     
@@ -27,7 +26,8 @@ class Cryptography {
     }
 
     func generateAESKey() -> String {
-        UserDefaults.standard.set(AES256CBC.generatePassword(), forKey: "AES-Key")
+        
+        UserDefaults.standard.set(AES.generatePassword(), forKey: "AES-Key")
         return UserDefaults.standard.string(forKey: "AES-Key")!
     }
     

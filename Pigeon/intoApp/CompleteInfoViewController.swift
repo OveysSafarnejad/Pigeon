@@ -164,7 +164,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
                                     let encrypted = try EncryptedMessage(base64Encoded: dictionary["secret"]!)
                                     let privateKey = try PrivateKey(pemEncoded: UserDefaults.standard.value(forKey: "Client-PrivateKey")! as! String)
                                     let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
-                                    let decryptedData = AES256CBC.decryptString(dictionary["data"]!, password: clearAESSecret)
+                                    let decryptedData = AES.decryptString(dictionary["data"]!, password: clearAESSecret)
                                     let xmppResult = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
                                     
                                     if xmppResult!["username"] != nil && xmppResult!["password"] != nil {
@@ -210,7 +210,7 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
         let paramJsonData = try? JSONSerialization.data(withJSONObject: plainParameters)
         
         
-        let encryptedDataWithAES = AES256CBC.encryptString(String(bytes: paramJsonData!, encoding: .utf8)!, password: UserDefaults.standard.string(forKey: "AES-Key")!)
+        let encryptedDataWithAES = AES.encryptString(String(bytes: paramJsonData!, encoding: .utf8)!, password: UserDefaults.standard.string(forKey: "AES-Key")!)
         
         let clearAESSecret = try! ClearMessage(string: UserDefaults.standard.string(forKey: "AES-Key")!, using: .utf8)
         let encryptedAESSecret = try! clearAESSecret.encrypted(with: try PublicKey(base64Encoded: UserDefaults.standard.string(forKey: "Server-Key")!), padding: .PKCS1)

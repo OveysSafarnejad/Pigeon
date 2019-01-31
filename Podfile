@@ -8,7 +8,7 @@ target 'Pigeon' do
 pod 'AFNetworking'
 pod 'SwCrypt'
 pod 'SwiftyRSA'
-pod 'AES256CBC'
+#pod 'AES256CBC'
 pod 'XMPPFramework'
 pod 'MBProgressHUD'
 pod 'CocoaAsyncSocket'

@@ -15,13 +15,13 @@
 		2400924A21F829B800A45123 /* OneRoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924321F829B700A45123 /* OneRoster.swift */; };
 		2400924B21F829B800A45123 /* OnePresence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924421F829B700A45123 /* OnePresence.swift */; };
 		2400924C21F829B800A45123 /* OneLastActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400924521F829B800A45123 /* OneLastActivity.swift */; };
-		2400FEAA21F5C29F0078EEB4 /* AES256CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400FEA921F5C29F0078EEB4 /* AES256CBC.swift */; };
 		2400FEAD21F5C6080078EEB4 /* Urls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2400FEAC21F5C6080078EEB4 /* Urls.swift */; };
 		2401727A22006AA70007CF33 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2401727922006AA70007CF33 /* Contact.swift */; };
 		2401727C22006AB40007CF33 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2401727B22006AB40007CF33 /* Message.swift */; };
 		2401727E22006B040007CF33 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2401727D22006B040007CF33 /* Group.swift */; };
 		2401728022006B110007CF33 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2401727F22006B110007CF33 /* Channel.swift */; };
 		2411FE3221F07DF300CE9A2F /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2411FE3121F07DF300CE9A2F /* OTPViewController.swift */; };
+		2421F5FC2202D239002211ED /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2421F5FB2202D239002211ED /* AES.swift */; };
 		247DDF5B21FD88E90071524B /* MainConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247DDF5A21FD88E90071524B /* MainConversation.swift */; };
 		247DDF6521FD8B690071524B /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247DDF6421FD8B690071524B /* ConversationCell.swift */; };
 		247DDF6821FD8EDA0071524B /* Conversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247DDF6721FD8EDA0071524B /* Conversation.swift */; };
@@ -46,13 +46,13 @@
 		2400924321F829B700A45123 /* OneRoster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneRoster.swift; sourceTree = "<group>"; };
 		2400924421F829B700A45123 /* OnePresence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnePresence.swift; sourceTree = "<group>"; };
 		2400924521F829B800A45123 /* OneLastActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneLastActivity.swift; sourceTree = "<group>"; };
-		2400FEA921F5C29F0078EEB4 /* AES256CBC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AES256CBC.swift; path = Pods/AES256CBC/Sources/AES256CBC.swift; sourceTree = SOURCE_ROOT; };
 		2400FEAC21F5C6080078EEB4 /* Urls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urls.swift; sourceTree = "<group>"; };
 		2401727922006AA70007CF33 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		2401727B22006AB40007CF33 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		2401727D22006B040007CF33 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		2401727F22006B110007CF33 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		2411FE3121F07DF300CE9A2F /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
+		2421F5FB2202D239002211ED /* AES.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
 		247DDF5A21FD88E90071524B /* MainConversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainConversation.swift; sourceTree = "<group>"; };
 		247DDF6421FD8B690071524B /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		247DDF6721FD8EDA0071524B /* Conversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conversation.swift; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 		24DE736721F467BC00C5FB6D /* util */ = {
 			isa = PBXGroup;
 			children = (
-				2400FEA921F5C29F0078EEB4 /* AES256CBC.swift */,
 				24EA0FD621FC471500D49137 /* Cryptography.swift */,
+				2421F5FB2202D239002211ED /* AES.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -326,7 +326,6 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AES256CBC/AES256CBC.framework",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
@@ -345,7 +344,6 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AES256CBC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
@@ -375,7 +373,6 @@
 				2400924B21F829B800A45123 /* OnePresence.swift in Sources */,
 				2401728022006B110007CF33 /* Channel.swift in Sources */,
 				2411FE3221F07DF300CE9A2F /* OTPViewController.swift in Sources */,
-				2400FEAA21F5C29F0078EEB4 /* AES256CBC.swift in Sources */,
 				247DDF5B21FD88E90071524B /* MainConversation.swift in Sources */,
 				2400924C21F829B800A45123 /* OneLastActivity.swift in Sources */,
 				2400924921F829B800A45123 /* OneChat.swift in Sources */,
@@ -386,6 +383,7 @@
 				2400FEAD21F5C6080078EEB4 /* Urls.swift in Sources */,
 				2400924721F829B800A45123 /* OneChats.swift in Sources */,
 				24EA0FD721FC471500D49137 /* Cryptography.swift in Sources */,
+				2421F5FC2202D239002211ED /* AES.swift in Sources */,
 				247DDF6521FD8B690071524B /* ConversationCell.swift in Sources */,
 				24D4A83C21F7485200BB03F3 /* Constants.swift in Sources */,
 				24ADD1EA21EEFE8500BB7BF4 /* StartUpViewController.swift in Sources */,

@@ -1,10 +1,10 @@
 //
-//  AES256CBC.swift
-//  AES256CBC https://github.com/SwiftyBeaver/AES256CBC
+//  AES.swift
+//  Pigeon
 //
-//  Created by Sebastian Kreutzberger on 2/9/16.
-//  Copyright © 2016 SwiftyBeaver. All rights reserved.
-//  test
+//  Created by Safarnejad on 1/30/19.
+//  Copyright © 2019 Safarnejad. All rights reserved.
+//
 
 import Foundation
 
@@ -13,180 +13,180 @@ public struct Random {
     #if os(Linux)
     static var initialized = false
     #endif
-
+    
     public static func generate(_ upperBound: Int) -> Int {
         #if os(Linux)
-            if !Random.initialized {
-                srandom(UInt32(time(nil)))
-                Random.initialized = true
-            }
-            return Int(random() % upperBound)
+        if !Random.initialized {
+            srandom(UInt32(time(nil)))
+            Random.initialized = true
+        }
+        return Int(random() % upperBound)
         #else
-            return Int(arc4random_uniform(UInt32(upperBound)))
+        return Int(arc4random_uniform(UInt32(upperBound)))
         #endif
     }
 }
 
 /// own Base64 implementation to fix Swift 3.1.x bug under Linux
 #if os(Linux)
-    struct InvalidBase64: Error {}
+struct InvalidBase64: Error {}
 
-    struct Base64 {
-        static func decode(_ string: String) throws -> [UInt8] {
-            return try decode([UInt8](string.utf8))
+struct Base64 {
+    static func decode(_ string: String) throws -> [UInt8] {
+        return try decode([UInt8](string.utf8))
+    }
+    
+    /// Decodes a Base64 encoded String into Data
+    ///
+    /// - throws: If the string isn't base64 encoded
+    static func decode(_ string: [UInt8]) throws -> [UInt8] {
+        let lookupTable: [UInt8] = [
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 62, 64, 62, 64, 63,
+            52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 64, 64, 64, 64, 64,
+            64, 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14,
+            15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 64, 64, 64, 64, 63,
+            64, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+            41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
+            64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
+        ]
+        
+        let remainder = string.count % 4
+        let length = (string.count - remainder) / 4
+        
+        var decoded = [UInt8]()
+        decoded.reserveCapacity(length)
+        
+        var index = 0
+        var i0: UInt8 = 0
+        var i1: UInt8 = 0
+        var i2: UInt8 = 0
+        var i3: UInt8 = 0
+        
+        while index &+ 4 < string.count {
+            i0 = lookupTable[numericCast(string[index])]
+            i1 = lookupTable[numericCast(string[index &+ 1])]
+            i2 = lookupTable[numericCast(string[index &+ 2])]
+            i3 = lookupTable[numericCast(string[index &+ 3])]
+            
+            if i0 > 63 || i1 > 63 || i2 > 63 || i3 > 63 {
+                throw InvalidBase64()
+            }
+            
+            decoded.append(i0 << 2 | i1 >> 4)
+            decoded.append(i1 << 4 | i2 >> 2)
+            decoded.append(i2 << 6 | i3)
+            index += 4
         }
-
-        /// Decodes a Base64 encoded String into Data
-        ///
-        /// - throws: If the string isn't base64 encoded
-        static func decode(_ string: [UInt8]) throws -> [UInt8] {
-            let lookupTable: [UInt8] = [
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 62, 64, 62, 64, 63,
-                52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 64, 64, 64, 64, 64,
-                64, 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14,
-                15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 64, 64, 64, 64, 63,
-                64, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
-                41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64,
-                64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64
-            ]
-
-            let remainder = string.count % 4
-            let length = (string.count - remainder) / 4
-
-            var decoded = [UInt8]()
-            decoded.reserveCapacity(length)
-
-            var index = 0
-            var i0: UInt8 = 0
-            var i1: UInt8 = 0
-            var i2: UInt8 = 0
-            var i3: UInt8 = 0
-
-            while index &+ 4 < string.count {
-                i0 = lookupTable[numericCast(string[index])]
-                i1 = lookupTable[numericCast(string[index &+ 1])]
-                i2 = lookupTable[numericCast(string[index &+ 2])]
-                i3 = lookupTable[numericCast(string[index &+ 3])]
-
-                if i0 > 63 || i1 > 63 || i2 > 63 || i3 > 63 {
+        
+        if string.count &- index > 1 {
+            i0 = lookupTable[numericCast(string[index])]
+            i1 = lookupTable[numericCast(string[index &+ 1])]
+            
+            if i1 > 63 {
+                guard string[index] == 61 else {
                     throw InvalidBase64()
                 }
-
-                decoded.append(i0 << 2 | i1 >> 4)
-                decoded.append(i1 << 4 | i2 >> 2)
-                decoded.append(i2 << 6 | i3)
-                index += 4
+                
+                return decoded
             }
-
-            if string.count &- index > 1 {
-                i0 = lookupTable[numericCast(string[index])]
-                i1 = lookupTable[numericCast(string[index &+ 1])]
-
-                if i1 > 63 {
-                    guard string[index] == 61 else {
-                        throw InvalidBase64()
-                    }
-
-                    return decoded
+            
+            if i2 > 63 {
+                guard string[index &+ 2] == 61 else {
+                    throw InvalidBase64()
                 }
-
+                
+                return decoded
+            }
+            
+            decoded.append(i0 << 2 | i1 >> 4)
+            
+            if string.count &- index > 2 {
+                i2 = lookupTable[numericCast(string[index &+ 2])]
+                
                 if i2 > 63 {
                     guard string[index &+ 2] == 61 else {
                         throw InvalidBase64()
                     }
-
+                    
                     return decoded
                 }
-
-                decoded.append(i0 << 2 | i1 >> 4)
-
-                if string.count &- index > 2 {
-                    i2 = lookupTable[numericCast(string[index &+ 2])]
-
-                    if i2 > 63 {
-                        guard string[index &+ 2] == 61 else {
+                
+                decoded.append(i1 << 4 | i2 >> 2)
+                
+                if string.count &- index > 3 {
+                    i3 = lookupTable[numericCast(string[index &+ 3])]
+                    
+                    if i3 > 63 {
+                        guard string[index &+ 3] == 61 else {
                             throw InvalidBase64()
                         }
-
+                        
                         return decoded
                     }
-
-                    decoded.append(i1 << 4 | i2 >> 2)
-
-                    if string.count &- index > 3 {
-                        i3 = lookupTable[numericCast(string[index &+ 3])]
-
-                        if i3 > 63 {
-                            guard string[index &+ 3] == 61 else {
-                                throw InvalidBase64()
-                            }
-
-                            return decoded
-                        }
-
-                        decoded.append(i2 << 6 | i3)
-                    }
+                    
+                    decoded.append(i2 << 6 | i3)
                 }
             }
-
-            return decoded
         }
-
-        static func encode(_ data: [UInt8]) -> String {
-            let base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
-            var encoded: String = ""
-
-            func appendCharacterFromBase(_ character: Int) {
-                encoded.append(base64[base64.index(base64.startIndex, offsetBy: character)])
-            }
-
-            func byte(_ index: Int) -> Int {
-                return Int(data[index])
-            }
-
-            let decodedBytes = data.map { Int($0) }
-
-            var i = 0
-
-            while i < decodedBytes.count - 2 {
-                appendCharacterFromBase((byte(i) >> 2) & 0x3F)
-                appendCharacterFromBase(((byte(i) & 0x3) << 4) | ((byte(i + 1) & 0xF0) >> 4))
-                appendCharacterFromBase(((byte(i + 1) & 0xF) << 2) | ((byte(i + 2) & 0xC0) >> 6))
-                appendCharacterFromBase(byte(i + 2) & 0x3F)
-                i += 3
-            }
-
-            if i < decodedBytes.count {
-                appendCharacterFromBase((byte(i) >> 2) & 0x3F)
-
-                if i == decodedBytes.count - 1 {
-                    appendCharacterFromBase(((byte(i) & 0x3) << 4))
-                    encoded.append("=")
-                } else {
-                    appendCharacterFromBase(((byte(i) & 0x3) << 4) | ((byte(i + 1) & 0xF0) >> 4))
-                    appendCharacterFromBase(((byte(i + 1) & 0xF) << 2))
-                }
-
-                encoded.append("=")
-            }
-
-            return encoded
-        }
+        
+        return decoded
     }
+    
+    static func encode(_ data: [UInt8]) -> String {
+        let base64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+        var encoded: String = ""
+        
+        func appendCharacterFromBase(_ character: Int) {
+            encoded.append(base64[base64.index(base64.startIndex, offsetBy: character)])
+        }
+        
+        func byte(_ index: Int) -> Int {
+            return Int(data[index])
+        }
+        
+        let decodedBytes = data.map { Int($0) }
+        
+        var i = 0
+        
+        while i < decodedBytes.count - 2 {
+            appendCharacterFromBase((byte(i) >> 2) & 0x3F)
+            appendCharacterFromBase(((byte(i) & 0x3) << 4) | ((byte(i + 1) & 0xF0) >> 4))
+            appendCharacterFromBase(((byte(i + 1) & 0xF) << 2) | ((byte(i + 2) & 0xC0) >> 6))
+            appendCharacterFromBase(byte(i + 2) & 0x3F)
+            i += 3
+        }
+        
+        if i < decodedBytes.count {
+            appendCharacterFromBase((byte(i) >> 2) & 0x3F)
+            
+            if i == decodedBytes.count - 1 {
+                appendCharacterFromBase(((byte(i) & 0x3) << 4))
+                encoded.append("=")
+            } else {
+                appendCharacterFromBase(((byte(i) & 0x3) << 4) | ((byte(i + 1) & 0xF0) >> 4))
+                appendCharacterFromBase(((byte(i + 1) & 0xF) << 2))
+            }
+            
+            encoded.append("=")
+        }
+        
+        return encoded
+    }
+}
 #endif
 
-final public class AES256CBC {
-
+final public class AES {
+    
     /// returns optional encrypted string via AES-256CBC
     /// automatically generates and puts a random IV at first 16 chars
     /// the password must be exactly 32 chars long for AES-256
@@ -194,7 +194,7 @@ final public class AES256CBC {
         if !str.isEmpty && password.length == 16 {
             let iv = randomText(16)
             let key = password
-
+            
             guard let encryptedString = try? aesEncrypt(str, key: key, iv: iv) else {
                 print("an error occured while encrypting")
                 return nil
@@ -203,7 +203,7 @@ final public class AES256CBC {
         }
         return nil
     }
-
+    
     /// returns optional decrypted string via AES-256CBC
     /// IV need to be at first 16 chars, password must be 32 chars long
     public class func decryptString(_ str: String, password: String) -> String? {
@@ -212,7 +212,6 @@ final public class AES256CBC {
             let iv = str.substring(to: str.index(str.startIndex, offsetBy: 16))
             let encryptedString = str.replacingOccurrences(of: iv, with: "",
                                                            options: String.CompareOptions.literal, range: nil) // remove IV
-
             guard let decryptedString = try? aesDecrypt(encryptedString, key: password, iv: iv) else {
                 print("an error occured while decrypting")
                 return nil
@@ -221,19 +220,19 @@ final public class AES256CBC {
         }
         return nil
     }
-
+    
     /// returns random string (uppercase & lowercase, no spaces) of 32 characters length
     /// which can be used as SHA-256 compatbile password
     public class func generatePassword() -> String {
         return randomText(16)
     }
-
+    
     /// returns random text of a defined length.
     /// Optional bool parameter justLowerCase to just generate random lowercase text and
     /// whitespace to exclude the whitespace character
     public class func randomText(_ length: Int, justLowerCase: Bool = false, whitespace: Bool = false) -> String {
         var chars = [UInt8]()
-
+        
         while chars.count < length {
             let char = CharType.random(justLowerCase, whitespace).randomCharacter()
             if char == 16 && (chars.last ?? 0) == char {
@@ -244,11 +243,11 @@ final public class AES256CBC {
         }
         return String(bytes: chars, encoding: .ascii)!
     }
-
+    
     /// Used for random text generation
     fileprivate enum CharType: Int {
         case LowerCase, UpperCase, Digit, Space
-
+        
         func randomCharacter() -> UInt8 {
             switch self {
             case .LowerCase:
@@ -261,7 +260,7 @@ final public class AES256CBC {
                 return 32
             }
         }
-
+        
         static func random(_ justLowerCase: Bool, _ allowWhitespace: Bool) -> CharType {
             if justLowerCase {
                 return .LowerCase
@@ -270,7 +269,7 @@ final public class AES256CBC {
             }
         }
     }
-
+    
     /// returns encrypted string, IV must be 16 chars long
     fileprivate class func aesEncrypt(_ str: String, key: String, iv: String) throws -> String {
         let keyData = key.data(using: String.Encoding.utf8)!
@@ -280,12 +279,12 @@ final public class AES256CBC {
                                             iv: ivData.bytes).encrypt(bytes: data.bytes))
         // Swift 3.1.x has a bug with base64encoding under Linux, so we are using our own
         #if os(Linux)
-            return Base64.encode([UInt8](enc))
+        return Base64.encode([UInt8](enc))
         #else
-            return enc.base64EncodedString(options: [])
+        return enc.base64EncodedString(options: [])
         #endif
     }
-
+    
     /// returns decrypted string, IV must be 16 chars long
     fileprivate class func aesDecrypt(_ str: String, key: String, iv: String) throws -> String {
         let keyData = key.data(using: String.Encoding.utf8)!
@@ -298,7 +297,7 @@ final public class AES256CBC {
         }
         return decryptStr
     }
-
+    
 }
 
 // swiftlint:disable line_length
@@ -319,38 +318,35 @@ final public class AES256CBC {
 // - This notice may not be removed or altered from any source or binary distribution.
 //
 // swiftlint:enable line_length
-
 // MARK: - AESCipher
-
 fileprivate typealias Key = Array<UInt8>
 
 final private class AESCipher {
-
+    
     public enum Error: Swift.Error {
         case blockSizeExceeded
         case dataPaddingRequired
         case invalidKeyOrInitializationVector
         case invalidInitializationVector
     }
-
+    
     enum Variant: Int {
         case aes128 = 1, aes192, aes256
-
+        
         var Nk: Int { // Nk words
             return [4, 6, 8][self.rawValue - 1]
         }
-
+        
         var Nb: Int { // Nb words
             return 4
         }
-
+        
         var Nr: Int { // Nr
             return Nk + 6
         }
     }
-
+    
     static let blockSize: Int = 16 // 128 /8
-
     var variant: Variant {
         switch self.key.count * 8 {
         case 128:
@@ -368,11 +364,11 @@ final private class AESCipher {
     private let blockMode = CBCBlockMode()
     private lazy var expandedKey: Array<Array<UInt32>> = self.expandKey(self.key, variant: self.variant)
     private lazy var expandedKeyInv: Array<Array<UInt32>> = self.expandKeyInv(self.key, variant: self.variant)
-
+    
     private lazy var sBoxes:(sBox: [UInt32], invSBox: [UInt32]) = self.calculateSBox()
     private lazy var sBox: [UInt32] = self.sBoxes.sBox
     private lazy var sBoxInv: [UInt32] = self.sBoxes.invSBox
-
+    
     // Parameters for Linear Congruence Generators
     private let Rcon: [UInt8] = [
         0x8d, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
@@ -391,7 +387,7 @@ final private class AESCipher {
         0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a, 0x2f, 0x5e, 0xbc, 0x63,
         0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91, 0x39, 0x72, 0xe4, 0xd3, 0xbd,
         0x61, 0xc2, 0x9f, 0x25, 0x4a, 0x94, 0x33, 0x66, 0xcc, 0x83, 0x1d, 0x3a, 0x74, 0xe8, 0xcb, 0x8d]
-
+    
     // swiftlint:disable line_length
     fileprivate let T0: Array<UInt32> = [0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0xdf2f2ff, 0xbd6b6bd6, 0xb16f6fde, 0x54c5c591, 0x50303060, 0x3010102, 0xa96767ce, 0x7d2b2b56, 0x19fefee7, 0x62d7d7b5, 0xe6abab4d, 0x9a7676ec, 0x45caca8f, 0x9d82821f, 0x40c9c989, 0x877d7dfa, 0x15fafaef, 0xeb5959b2, 0xc947478e, 0xbf0f0fb, 0xecadad41, 0x67d4d4b3, 0xfda2a25f, 0xeaafaf45, 0xbf9c9c23, 0xf7a4a453, 0x967272e4, 0x5bc0c09b, 0xc2b7b775, 0x1cfdfde1, 0xae93933d, 0x6a26264c, 0x5a36366c, 0x413f3f7e, 0x2f7f7f5, 0x4fcccc83, 0x5c343468, 0xf4a5a551, 0x34e5e5d1, 0x8f1f1f9, 0x937171e2, 0x73d8d8ab, 0x53313162, 0x3f15152a, 0xc040408, 0x52c7c795, 0x65232346, 0x5ec3c39d, 0x28181830, 0xa1969637, 0xf05050a, 0xb59a9a2f, 0x907070e, 0x36121224, 0x9b80801b, 0x3de2e2df, 0x26ebebcd, 0x6927274e, 0xcdb2b27f, 0x9f7575ea, 0x1b090912, 0x9e83831d, 0x742c2c58, 0x2e1a1a34, 0x2d1b1b36, 0xb26e6edc, 0xee5a5ab4, 0xfba0a05b, 0xf65252a4, 0x4d3b3b76, 0x61d6d6b7, 0xceb3b37d, 0x7b292952, 0x3ee3e3dd, 0x712f2f5e, 0x97848413, 0xf55353a6, 0x68d1d1b9, 0x0, 0x2cededc1, 0x60202040, 0x1ffcfce3, 0xc8b1b179, 0xed5b5bb6, 0xbe6a6ad4, 0x46cbcb8d, 0xd9bebe67, 0x4b393972, 0xde4a4a94, 0xd44c4c98, 0xe85858b0, 0x4acfcf85, 0x6bd0d0bb, 0x2aefefc5, 0xe5aaaa4f, 0x16fbfbed, 0xc5434386, 0xd74d4d9a, 0x55333366, 0x94858511, 0xcf45458a, 0x10f9f9e9, 0x6020204, 0x817f7ffe, 0xf05050a0, 0x443c3c78, 0xba9f9f25, 0xe3a8a84b, 0xf35151a2, 0xfea3a35d, 0xc0404080, 0x8a8f8f05, 0xad92923f, 0xbc9d9d21, 0x48383870, 0x4f5f5f1, 0xdfbcbc63, 0xc1b6b677, 0x75dadaaf, 0x63212142, 0x30101020, 0x1affffe5, 0xef3f3fd, 0x6dd2d2bf, 0x4ccdcd81, 0x140c0c18, 0x35131326, 0x2fececc3, 0xe15f5fbe, 0xa2979735, 0xcc444488, 0x3917172e, 0x57c4c493, 0xf2a7a755, 0x827e7efc, 0x473d3d7a, 0xac6464c8, 0xe75d5dba, 0x2b191932, 0x957373e6, 0xa06060c0, 0x98818119, 0xd14f4f9e, 0x7fdcdca3, 0x66222244, 0x7e2a2a54, 0xab90903b, 0x8388880b, 0xca46468c, 0x29eeeec7, 0xd3b8b86b, 0x3c141428, 0x79dedea7, 0xe25e5ebc, 0x1d0b0b16, 0x76dbdbad, 0x3be0e0db, 0x56323264, 0x4e3a3a74, 0x1e0a0a14, 0xdb494992, 0xa06060c, 0x6c242448, 0xe45c5cb8, 0x5dc2c29f, 0x6ed3d3bd, 0xefacac43, 0xa66262c4, 0xa8919139, 0xa4959531, 0x37e4e4d3, 0x8b7979f2, 0x32e7e7d5, 0x43c8c88b, 0x5937376e, 0xb76d6dda, 0x8c8d8d01, 0x64d5d5b1, 0xd24e4e9c, 0xe0a9a949, 0xb46c6cd8, 0xfa5656ac, 0x7f4f4f3, 0x25eaeacf, 0xaf6565ca, 0x8e7a7af4, 0xe9aeae47, 0x18080810, 0xd5baba6f, 0x887878f0, 0x6f25254a, 0x722e2e5c, 0x241c1c38, 0xf1a6a657, 0xc7b4b473, 0x51c6c697, 0x23e8e8cb, 0x7cdddda1, 0x9c7474e8, 0x211f1f3e, 0xdd4b4b96, 0xdcbdbd61, 0x868b8b0d, 0x858a8a0f, 0x907070e0, 0x423e3e7c, 0xc4b5b571, 0xaa6666cc, 0xd8484890, 0x5030306, 0x1f6f6f7, 0x120e0e1c, 0xa36161c2, 0x5f35356a, 0xf95757ae, 0xd0b9b969, 0x91868617, 0x58c1c199, 0x271d1d3a, 0xb99e9e27, 0x38e1e1d9, 0x13f8f8eb, 0xb398982b, 0x33111122, 0xbb6969d2, 0x70d9d9a9, 0x898e8e07, 0xa7949433, 0xb69b9b2d, 0x221e1e3c, 0x92878715, 0x20e9e9c9, 0x49cece87, 0xff5555aa, 0x78282850, 0x7adfdfa5, 0x8f8c8c03, 0xf8a1a159, 0x80898909, 0x170d0d1a, 0xdabfbf65, 0x31e6e6d7, 0xc6424284, 0xb86868d0, 0xc3414182, 0xb0999929, 0x772d2d5a, 0x110f0f1e, 0xcbb0b07b, 0xfc5454a8, 0xd6bbbb6d, 0x3a16162c]
     fileprivate let T0_INV: Array<UInt32> = [0x50a7f451, 0x5365417e, 0xc3a4171a, 0x965e273a, 0xcb6bab3b, 0xf1459d1f, 0xab58faac, 0x9303e34b, 0x55fa3020, 0xf66d76ad, 0x9176cc88, 0x254c02f5, 0xfcd7e54f, 0xd7cb2ac5, 0x80443526, 0x8fa362b5, 0x495ab1de, 0x671bba25, 0x980eea45, 0xe1c0fe5d, 0x2752fc3, 0x12f04c81, 0xa397468d, 0xc6f9d36b, 0xe75f8f03, 0x959c9215, 0xeb7a6dbf, 0xda595295, 0x2d83bed4, 0xd3217458, 0x2969e049, 0x44c8c98e, 0x6a89c275, 0x78798ef4, 0x6b3e5899, 0xdd71b927, 0xb64fe1be, 0x17ad88f0, 0x66ac20c9, 0xb43ace7d, 0x184adf63, 0x82311ae5, 0x60335197, 0x457f5362, 0xe07764b1, 0x84ae6bbb, 0x1ca081fe, 0x942b08f9, 0x58684870, 0x19fd458f, 0x876cde94, 0xb7f87b52, 0x23d373ab, 0xe2024b72, 0x578f1fe3, 0x2aab5566, 0x728ebb2, 0x3c2b52f, 0x9a7bc586, 0xa50837d3, 0xf2872830, 0xb2a5bf23, 0xba6a0302, 0x5c8216ed, 0x2b1ccf8a, 0x92b479a7, 0xf0f207f3, 0xa1e2694e, 0xcdf4da65, 0xd5be0506, 0x1f6234d1, 0x8afea6c4, 0x9d532e34, 0xa055f3a2, 0x32e18a05, 0x75ebf6a4, 0x39ec830b, 0xaaef6040, 0x69f715e, 0x51106ebd, 0xf98a213e, 0x3d06dd96, 0xae053edd, 0x46bde64d, 0xb58d5491, 0x55dc471, 0x6fd40604, 0xff155060, 0x24fb9819, 0x97e9bdd6, 0xcc434089, 0x779ed967, 0xbd42e8b0, 0x888b8907, 0x385b19e7, 0xdbeec879, 0x470a7ca1, 0xe90f427c, 0xc91e84f8, 0x0, 0x83868009, 0x48ed2b32, 0xac70111e, 0x4e725a6c, 0xfbff0efd, 0x5638850f, 0x1ed5ae3d, 0x27392d36, 0x64d90f0a, 0x21a65c68, 0xd1545b9b, 0x3a2e3624, 0xb1670a0c, 0xfe75793, 0xd296eeb4, 0x9e919b1b, 0x4fc5c080, 0xa220dc61, 0x694b775a, 0x161a121c, 0xaba93e2, 0xe52aa0c0, 0x43e0223c, 0x1d171b12, 0xb0d090e, 0xadc78bf2, 0xb9a8b62d, 0xc8a91e14, 0x8519f157, 0x4c0775af, 0xbbdd99ee, 0xfd607fa3, 0x9f2601f7, 0xbcf5725c, 0xc53b6644, 0x347efb5b, 0x7629438b, 0xdcc623cb, 0x68fcedb6, 0x63f1e4b8, 0xcadc31d7, 0x10856342, 0x40229713, 0x2011c684, 0x7d244a85, 0xf83dbbd2, 0x1132f9ae, 0x6da129c7, 0x4b2f9e1d, 0xf330b2dc, 0xec52860d, 0xd0e3c177, 0x6c16b32b, 0x99b970a9, 0xfa489411, 0x2264e947, 0xc48cfca8, 0x1a3ff0a0, 0xd82c7d56, 0xef903322, 0xc74e4987, 0xc1d138d9, 0xfea2ca8c, 0x360bd498, 0xcf81f5a6, 0x28de7aa5, 0x268eb7da, 0xa4bfad3f, 0xe49d3a2c, 0xd927850, 0x9bcc5f6a, 0x62467e54, 0xc2138df6, 0xe8b8d890, 0x5ef7392e, 0xf5afc382, 0xbe805d9f, 0x7c93d069, 0xa92dd56f, 0xb31225cf, 0x3b99acc8, 0xa77d1810, 0x6e639ce8, 0x7bbb3bdb, 0x97826cd, 0xf418596e, 0x1b79aec, 0xa89a4f83, 0x656e95e6, 0x7ee6ffaa, 0x8cfbc21, 0xe6e815ef, 0xd99be7ba, 0xce366f4a, 0xd4099fea, 0xd67cb029, 0xafb2a431, 0x31233f2a, 0x3094a5c6, 0xc066a235, 0x37bc4e74, 0xa6ca82fc, 0xb0d090e0, 0x15d8a733, 0x4a9804f1, 0xf7daec41, 0xe50cd7f, 0x2ff69117, 0x8dd64d76, 0x4db0ef43, 0x544daacc, 0xdf0496e4, 0xe3b5d19e, 0x1b886a4c, 0xb81f2cc1, 0x7f516546, 0x4ea5e9d, 0x5d358c01, 0x737487fa, 0x2e410bfb, 0x5a1d67b3, 0x52d2db92, 0x335610e9, 0x1347d66d, 0x8c61d79a, 0x7a0ca137, 0x8e14f859, 0x893c13eb, 0xee27a9ce, 0x35c961b7, 0xede51ce1, 0x3cb1477a, 0x59dfd29c, 0x3f73f255, 0x79ce1418, 0xbf37c773, 0xeacdf753, 0x5baafd5f, 0x146f3ddf, 0x86db4478, 0x81f3afca, 0x3ec468b9, 0x2c342438, 0x5f40a3c2, 0x72c31d16, 0xc25e2bc, 0x8b493c28, 0x41950dff, 0x7101a839, 0xdeb30c08, 0x9ce4b4d8, 0x90c15664, 0x6184cb7b, 0x70b632d5, 0x745c6c48, 0x4257b8d0]
@@ -406,85 +402,82 @@ final private class AESCipher {
     fileprivate var U3: Array<UInt32> = [0x0, 0x90e0b0d, 0x121c161a, 0x1b121d17, 0x24382c34, 0x2d362739, 0x36243a2e, 0x3f2a3123, 0x48705868, 0x417e5365, 0x5a6c4e72, 0x5362457f, 0x6c48745c, 0x65467f51, 0x7e546246, 0x775a694b, 0x90e0b0d0, 0x99eebbdd, 0x82fca6ca, 0x8bf2adc7, 0xb4d89ce4, 0xbdd697e9, 0xa6c48afe, 0xafca81f3, 0xd890e8b8, 0xd19ee3b5, 0xca8cfea2, 0xc382f5af, 0xfca8c48c, 0xf5a6cf81, 0xeeb4d296, 0xe7bad99b, 0x3bdb7bbb, 0x32d570b6, 0x29c76da1, 0x20c966ac, 0x1fe3578f, 0x16ed5c82, 0xdff4195, 0x4f14a98, 0x73ab23d3, 0x7aa528de, 0x61b735c9, 0x68b93ec4, 0x57930fe7, 0x5e9d04ea, 0x458f19fd, 0x4c8112f0, 0xab3bcb6b, 0xa235c066, 0xb927dd71, 0xb029d67c, 0x8f03e75f, 0x860dec52, 0x9d1ff145, 0x9411fa48, 0xe34b9303, 0xea45980e, 0xf1578519, 0xf8598e14, 0xc773bf37, 0xce7db43a, 0xd56fa92d, 0xdc61a220, 0x76adf66d, 0x7fa3fd60, 0x64b1e077, 0x6dbfeb7a, 0x5295da59, 0x5b9bd154, 0x4089cc43, 0x4987c74e, 0x3eddae05, 0x37d3a508, 0x2cc1b81f, 0x25cfb312, 0x1ae58231, 0x13eb893c, 0x8f9942b, 0x1f79f26, 0xe64d46bd, 0xef434db0, 0xf45150a7, 0xfd5f5baa, 0xc2756a89, 0xcb7b6184, 0xd0697c93, 0xd967779e, 0xae3d1ed5, 0xa73315d8, 0xbc2108cf, 0xb52f03c2, 0x8a0532e1, 0x830b39ec, 0x981924fb, 0x91172ff6, 0x4d768dd6, 0x447886db, 0x5f6a9bcc, 0x566490c1, 0x694ea1e2, 0x6040aaef, 0x7b52b7f8, 0x725cbcf5, 0x506d5be, 0xc08deb3, 0x171ac3a4, 0x1e14c8a9, 0x213ef98a, 0x2830f287, 0x3322ef90, 0x3a2ce49d, 0xdd963d06, 0xd498360b, 0xcf8a2b1c, 0xc6842011, 0xf9ae1132, 0xf0a01a3f, 0xebb20728, 0xe2bc0c25, 0x95e6656e, 0x9ce86e63, 0x87fa7374, 0x8ef47879, 0xb1de495a, 0xb8d04257, 0xa3c25f40, 0xaacc544d, 0xec41f7da, 0xe54ffcd7, 0xfe5de1c0, 0xf753eacd, 0xc879dbee, 0xc177d0e3, 0xda65cdf4, 0xd36bc6f9, 0xa431afb2, 0xad3fa4bf, 0xb62db9a8, 0xbf23b2a5, 0x80098386, 0x8907888b, 0x9215959c, 0x9b1b9e91, 0x7ca1470a, 0x75af4c07, 0x6ebd5110, 0x67b35a1d, 0x58996b3e, 0x51976033, 0x4a857d24, 0x438b7629, 0x34d11f62, 0x3ddf146f, 0x26cd0978, 0x2fc30275, 0x10e93356, 0x19e7385b, 0x2f5254c, 0xbfb2e41, 0xd79a8c61, 0xde94876c, 0xc5869a7b, 0xcc889176, 0xf3a2a055, 0xfaacab58, 0xe1beb64f, 0xe8b0bd42, 0x9fead409, 0x96e4df04, 0x8df6c213, 0x84f8c91e, 0xbbd2f83d, 0xb2dcf330, 0xa9ceee27, 0xa0c0e52a, 0x477a3cb1, 0x4e7437bc, 0x55662aab, 0x5c6821a6, 0x63421085, 0x6a4c1b88, 0x715e069f, 0x78500d92, 0xf0a64d9, 0x6046fd4, 0x1d1672c3, 0x141879ce, 0x2b3248ed, 0x223c43e0, 0x392e5ef7, 0x302055fa, 0x9aec01b7, 0x93e20aba, 0x88f017ad, 0x81fe1ca0, 0xbed42d83, 0xb7da268e, 0xacc83b99, 0xa5c63094, 0xd29c59df, 0xdb9252d2, 0xc0804fc5, 0xc98e44c8, 0xf6a475eb, 0xffaa7ee6, 0xe4b863f1, 0xedb668fc, 0xa0cb167, 0x302ba6a, 0x1810a77d, 0x111eac70, 0x2e349d53, 0x273a965e, 0x3c288b49, 0x35268044, 0x427ce90f, 0x4b72e202, 0x5060ff15, 0x596ef418, 0x6644c53b, 0x6f4ace36, 0x7458d321, 0x7d56d82c, 0xa1377a0c, 0xa8397101, 0xb32b6c16, 0xba25671b, 0x850f5638, 0x8c015d35, 0x97134022, 0x9e1d4b2f, 0xe9472264, 0xe0492969, 0xfb5b347e, 0xf2553f73, 0xcd7f0e50, 0xc471055d, 0xdf63184a, 0xd66d1347, 0x31d7cadc, 0x38d9c1d1, 0x23cbdcc6, 0x2ac5d7cb, 0x15efe6e8, 0x1ce1ede5, 0x7f3f0f2, 0xefdfbff, 0x79a792b4, 0x70a999b9, 0x6bbb84ae, 0x62b58fa3, 0x5d9fbe80, 0x5491b58d, 0x4f83a89a, 0x468da397]
     fileprivate var U4: Array<UInt32> = [0x0, 0xe0b0d09, 0x1c161a12, 0x121d171b, 0x382c3424, 0x3627392d, 0x243a2e36, 0x2a31233f, 0x70586848, 0x7e536541, 0x6c4e725a, 0x62457f53, 0x48745c6c, 0x467f5165, 0x5462467e, 0x5a694b77, 0xe0b0d090, 0xeebbdd99, 0xfca6ca82, 0xf2adc78b, 0xd89ce4b4, 0xd697e9bd, 0xc48afea6, 0xca81f3af, 0x90e8b8d8, 0x9ee3b5d1, 0x8cfea2ca, 0x82f5afc3, 0xa8c48cfc, 0xa6cf81f5, 0xb4d296ee, 0xbad99be7, 0xdb7bbb3b, 0xd570b632, 0xc76da129, 0xc966ac20, 0xe3578f1f, 0xed5c8216, 0xff41950d, 0xf14a9804, 0xab23d373, 0xa528de7a, 0xb735c961, 0xb93ec468, 0x930fe757, 0x9d04ea5e, 0x8f19fd45, 0x8112f04c, 0x3bcb6bab, 0x35c066a2, 0x27dd71b9, 0x29d67cb0, 0x3e75f8f, 0xdec5286, 0x1ff1459d, 0x11fa4894, 0x4b9303e3, 0x45980eea, 0x578519f1, 0x598e14f8, 0x73bf37c7, 0x7db43ace, 0x6fa92dd5, 0x61a220dc, 0xadf66d76, 0xa3fd607f, 0xb1e07764, 0xbfeb7a6d, 0x95da5952, 0x9bd1545b, 0x89cc4340, 0x87c74e49, 0xddae053e, 0xd3a50837, 0xc1b81f2c, 0xcfb31225, 0xe582311a, 0xeb893c13, 0xf9942b08, 0xf79f2601, 0x4d46bde6, 0x434db0ef, 0x5150a7f4, 0x5f5baafd, 0x756a89c2, 0x7b6184cb, 0x697c93d0, 0x67779ed9, 0x3d1ed5ae, 0x3315d8a7, 0x2108cfbc, 0x2f03c2b5, 0x532e18a, 0xb39ec83, 0x1924fb98, 0x172ff691, 0x768dd64d, 0x7886db44, 0x6a9bcc5f, 0x6490c156, 0x4ea1e269, 0x40aaef60, 0x52b7f87b, 0x5cbcf572, 0x6d5be05, 0x8deb30c, 0x1ac3a417, 0x14c8a91e, 0x3ef98a21, 0x30f28728, 0x22ef9033, 0x2ce49d3a, 0x963d06dd, 0x98360bd4, 0x8a2b1ccf, 0x842011c6, 0xae1132f9, 0xa01a3ff0, 0xb20728eb, 0xbc0c25e2, 0xe6656e95, 0xe86e639c, 0xfa737487, 0xf478798e, 0xde495ab1, 0xd04257b8, 0xc25f40a3, 0xcc544daa, 0x41f7daec, 0x4ffcd7e5, 0x5de1c0fe, 0x53eacdf7, 0x79dbeec8, 0x77d0e3c1, 0x65cdf4da, 0x6bc6f9d3, 0x31afb2a4, 0x3fa4bfad, 0x2db9a8b6, 0x23b2a5bf, 0x9838680, 0x7888b89, 0x15959c92, 0x1b9e919b, 0xa1470a7c, 0xaf4c0775, 0xbd51106e, 0xb35a1d67, 0x996b3e58, 0x97603351, 0x857d244a, 0x8b762943, 0xd11f6234, 0xdf146f3d, 0xcd097826, 0xc302752f, 0xe9335610, 0xe7385b19, 0xf5254c02, 0xfb2e410b, 0x9a8c61d7, 0x94876cde, 0x869a7bc5, 0x889176cc, 0xa2a055f3, 0xacab58fa, 0xbeb64fe1, 0xb0bd42e8, 0xead4099f, 0xe4df0496, 0xf6c2138d, 0xf8c91e84, 0xd2f83dbb, 0xdcf330b2, 0xceee27a9, 0xc0e52aa0, 0x7a3cb147, 0x7437bc4e, 0x662aab55, 0x6821a65c, 0x42108563, 0x4c1b886a, 0x5e069f71, 0x500d9278, 0xa64d90f, 0x46fd406, 0x1672c31d, 0x1879ce14, 0x3248ed2b, 0x3c43e022, 0x2e5ef739, 0x2055fa30, 0xec01b79a, 0xe20aba93, 0xf017ad88, 0xfe1ca081, 0xd42d83be, 0xda268eb7, 0xc83b99ac, 0xc63094a5, 0x9c59dfd2, 0x9252d2db, 0x804fc5c0, 0x8e44c8c9, 0xa475ebf6, 0xaa7ee6ff, 0xb863f1e4, 0xb668fced, 0xcb1670a, 0x2ba6a03, 0x10a77d18, 0x1eac7011, 0x349d532e, 0x3a965e27, 0x288b493c, 0x26804435, 0x7ce90f42, 0x72e2024b, 0x60ff1550, 0x6ef41859, 0x44c53b66, 0x4ace366f, 0x58d32174, 0x56d82c7d, 0x377a0ca1, 0x397101a8, 0x2b6c16b3, 0x25671bba, 0xf563885, 0x15d358c, 0x13402297, 0x1d4b2f9e, 0x472264e9, 0x492969e0, 0x5b347efb, 0x553f73f2, 0x7f0e50cd, 0x71055dc4, 0x63184adf, 0x6d1347d6, 0xd7cadc31, 0xd9c1d138, 0xcbdcc623, 0xc5d7cb2a, 0xefe6e815, 0xe1ede51c, 0xf3f0f207, 0xfdfbff0e, 0xa792b479, 0xa999b970, 0xbb84ae6b, 0xb58fa362, 0x9fbe805d, 0x91b58d54, 0x83a89a4f, 0x8da39746]
     // swiftlint:enable line_length
-
     init(key: [UInt8], iv: [UInt8]) throws {
         self.key = key
         self.iv = iv
     }
-
+    
     convenience init(key: [UInt8]) throws {
         // default IV is all 0x00...
         let defaultIV = [UInt8](repeating: 0, count: AESCipher.blockSize)
         try self.init(key: key, iv: defaultIV)
     }
-
+    
     /**
      Encrypt message. If padding is necessary, then PKCS7 padding is added and needs to be removed after decryption.
-
      - parameter message: Plaintext data
      - parameter padding: Optional padding
-
      - returns: Encrypted data
      */
-
+    
     func encrypt(bytes: [UInt8]) throws -> [UInt8] {
         let finalBytes = PKCS7().add(bytes: bytes, blockSize: AESCipher.blockSize)
         let blocks = finalBytes.chunks(size: AESCipher.blockSize)
         return try blockMode.encrypt(blocks: blocks, iv: self.iv, cipherOperation: encrypt)
     }
-
+    
     private func encrypt(block: [UInt8]) -> [UInt8]? {
         let rounds = self.variant.Nr
         let rk = self.expandedKey
         var b = toUInt32Array(slice: block[block.startIndex..<block.endIndex])
-
+        
         var t = [UInt32](repeating: 0, count: 4)
-
+        
         for r in 0..<rounds - 1 {
             t[0] = b[0] ^ rk[r][0]
             t[1] = b[1] ^ rk[r][1]
             t[2] = b[2] ^ rk[r][2]
             t[3] = b[3] ^ rk[r][3]
-
+            
             let lb00 = T0[Int(t[0] & 0xFF)]
             let lb01 = T1[Int((t[1] >> 8) & 0xFF)]
             let lb02 = T2[Int((t[2] >> 16) & 0xFF)]
             let lb03 = T3[Int(t[3] >> 24)]
             b[0] = lb00 ^ lb01 ^ lb02 ^ lb03
-
+            
             let lb10 = T0[Int(t[1] & 0xFF)]
             let lb11 = T1[Int((t[2] >> 8) & 0xFF)]
             let lb12 = T2[Int((t[3] >> 16) & 0xFF)]
             let lb13 = T3[Int(t[0] >> 24)]
             b[1] = lb10 ^ lb11 ^ lb12 ^ lb13
-
+            
             let lb20 = T0[Int(t[2] & 0xFF)]
             let lb21 = T1[Int((t[3] >> 8) & 0xFF)]
             let lb22 = T2[Int((t[0] >> 16) & 0xFF)]
             let lb23 = T3[Int(t[1] >> 24)]
             b[2] = lb20 ^ lb21 ^ lb22 ^ lb23
-
+            
             let lb30 = T0[Int(t[3] & 0xFF)]
             let lb31 = T1[Int((t[0] >> 8) & 0xFF)]
             let lb32 = T2[Int((t[1] >> 16) & 0xFF)]
             let lb33 = T3[Int(t[2] >> 24)]
             b[3] = lb30 ^ lb31 ^ lb32 ^ lb33
         }
-
+        
         // last round
         let r = rounds - 1
-
+        
         t[0] = b[0] ^ rk[r][0]
         t[1] = b[1] ^ rk[r][1]
         t[2] = b[2] ^ rk[r][2]
         t[3] = b[3] ^ rk[r][3]
-
+        
         // rounds
         b[0] = F1(t[0], t[1], t[2], t[3]) ^ rk[rounds][0]
         b[1] = F1(t[1], t[2], t[3], t[0]) ^ rk[rounds][1]
         b[2] = F1(t[2], t[3], t[0], t[1]) ^ rk[rounds][2]
         b[3] = F1(t[3], t[0], t[1], t[2]) ^ rk[rounds][3]
-
+        
         var out = [UInt8]()
         out.reserveCapacity(b.count * 4)
         for num in b {
@@ -493,89 +486,88 @@ final private class AESCipher {
             out.append(UInt8((num >> 16) & 0xFF))
             out.append(UInt8((num >> 24) & 0xFF))
         }
-
+        
         return out
     }
-
+    
     func decrypt(bytes: [UInt8]) throws -> [UInt8] {
         if (bytes.count % AESCipher.blockSize) != 0 {
             throw Error.blockSizeExceeded
         }
-
+        
         let blocks = bytes.chunks(size: AESCipher.blockSize)
         return try PKCS7().remove(bytes: blockMode.decrypt(blocks: blocks, iv: self.iv, cipherOperation: decrypt), blockSize: AESCipher.blockSize)
     }
-
+    
     private func decrypt(block: [UInt8]) -> [UInt8]? {
         let rounds = self.variant.Nr
         let rk = expandedKeyInv
         var b = toUInt32Array(slice: block[block.startIndex..<block.endIndex])
-
+        
         var t = [UInt32](repeating: 0, count: 4)
-
+        
         for r in (2...rounds).reversed() {
             t[0] = b[0] ^ rk[r][0]
             t[1] = b[1] ^ rk[r][1]
             t[2] = b[2] ^ rk[r][2]
             t[3] = b[3] ^ rk[r][3]
-
+            
             let b00 = T0_INV[Int(t[0] & 0xFF)]
             let b01 = T1_INV[Int((t[3] >> 8) & 0xFF)]
             let b02 = T2_INV[Int((t[2] >> 16) & 0xFF)]
             let b03 = T3_INV[Int(t[1] >> 24)]
             b[0] = b00 ^ b01 ^ b02 ^ b03
-
+            
             let b10 = T0_INV[Int(t[1] & 0xFF)]
             let b11 = T1_INV[Int((t[0] >> 8) & 0xFF)]
             let b12 = T2_INV[Int((t[3] >> 16) & 0xFF)]
             let b13 = T3_INV[Int(t[2] >> 24)]
             b[1] = b10 ^ b11 ^ b12 ^ b13
-
+            
             let b20 = T0_INV[Int(t[2] & 0xFF)]
             let b21 = T1_INV[Int((t[1] >> 8) & 0xFF)]
             let b22 = T2_INV[Int((t[0] >> 16) & 0xFF)]
             let b23 = T3_INV[Int(t[3] >> 24)]
             b[2] = b20 ^ b21 ^ b22 ^ b23
-
+            
             let b30 = T0_INV[Int(t[3] & 0xFF)]
             let b31 = T1_INV[Int((t[2] >> 8) & 0xFF)]
             let b32 = T2_INV[Int((t[1] >> 16) & 0xFF)]
             let b33 = T3_INV[Int(t[0] >> 24)]
             b[3] = b30 ^ b31 ^ b32 ^ b33
         }
-
+        
         // last round
         t[0] = b[0] ^ rk[1][0]
         t[1] = b[1] ^ rk[1][1]
         t[2] = b[2] ^ rk[1][2]
         t[3] = b[3] ^ rk[1][3]
-
+        
         // rounds
-
         let lb00 = sBoxInv[Int(B0(t[0]))]
         let lb01 = (sBoxInv[Int(B1(t[3]))] << 8)
         let lb02 = (sBoxInv[Int(B2(t[2]))] << 16)
         let lb03 = (sBoxInv[Int(B3(t[1]))] << 24)
         b[0] = lb00 | lb01 | lb02 | lb03 ^ rk[0][0]
-
+        
         let lb10 = sBoxInv[Int(B0(t[1]))]
         let lb11 = (sBoxInv[Int(B1(t[0]))] << 8)
         let lb12 = (sBoxInv[Int(B2(t[3]))] << 16)
         let lb13 = (sBoxInv[Int(B3(t[2]))] << 24)
         b[1] = lb10 | lb11 | lb12 | lb13 ^ rk[0][1]
-
+        
         let lb20 = sBoxInv[Int(B0(t[2]))]
         let lb21 = (sBoxInv[Int(B1(t[1]))] << 8)
         let lb22 = (sBoxInv[Int(B2(t[0]))] << 16)
         let lb23 = (sBoxInv[Int(B3(t[3]))] << 24)
         b[2] = lb20 | lb21 | lb22 | lb23 ^ rk[0][2]
-
+        
         let lb30 = sBoxInv[Int(B0(t[3]))]
         let lb31 = (sBoxInv[Int(B1(t[2]))] << 8)
         let lb32 = (sBoxInv[Int(B2(t[1]))] << 16)
         let lb33 = (sBoxInv[Int(B3(t[0]))] << 24)
         b[3] = lb30 | lb31 | lb32 | lb33 ^ rk[0][3]
-
+        
         var out = [UInt8]()
         out.reserveCapacity(b.count * 4)
         for num in b {
@@ -584,43 +576,43 @@ final private class AESCipher {
             out.append(UInt8((num >> 16) & 0xFF))
             out.append(UInt8((num >> 24) & 0xFF))
         }
-
+        
         return out
     }
-
+    
     fileprivate func expandKeyInv(_ key: Key, variant: Variant) -> Array<Array<UInt32>> {
         let rounds = variant.Nr
         var rk2: Array<Array<UInt32>> = expandKey(key, variant: variant)
-
+        
         for r in 1..<rounds {
             var w: UInt32
-
+            
             w = rk2[r][0]
             let u1 = U1[Int(B0(w))] ^ U2[Int(B1(w))]
             let u2 = U3[Int(B2(w))] ^ U4[Int(B3(w))]
             rk2[r][0] = u1 ^ u2
-
+            
             w = rk2[r][1]
             let u11 = U1[Int(B0(w))] ^ U2[Int(B1(w))]
             let u12 = U3[Int(B2(w))] ^ U4[Int(B3(w))]
             rk2[r][1] = u11 ^ u12
-
+            
             w = rk2[r][2]
             let u22 = U1[Int(B0(w))] ^ U2[Int(B1(w))]
             let u23 = U3[Int(B2(w))] ^ U4[Int(B3(w))]
             rk2[r][2] = u22 ^ u23
-
+            
             w = rk2[r][3]
             let u33 = U1[Int(B0(w))] ^ U2[Int(B1(w))]
             let u34 = U3[Int(B2(w))] ^ U4[Int(B3(w))]
             rk2[r][3] = u33 ^ u34
         }
-
+        
         return rk2
     }
-
+    
     fileprivate func expandKey(_ key: Key, variant: Variant) -> Array<Array<UInt32>> {
-
+        
         func convertExpandedKey(_ expanded: Array<UInt8>) -> Array<Array<UInt32>> {
             var arr = Array<UInt32>()
             for idx in stride(from: expanded.startIndex, to: expanded.endIndex, by: 4) {
@@ -628,14 +620,14 @@ final private class AESCipher {
                 let num = UInt32(bytes: four)
                 arr.append(num)
             }
-
+            
             var allarr = Array<Array<UInt32>>()
             for idx in stride(from: arr.startIndex, to: arr.endIndex, by: 4) {
                 allarr.append(Array(arr[idx..<idx.advanced(by: 4)]))
             }
             return allarr
         }
-
+        
         /*
          * Function used in the Key Expansion routine that takes a four-byte
          * input word and applies an S-box to each of the four bytes to
@@ -648,19 +640,19 @@ final private class AESCipher {
             }
             return result
         }
-
+        
         var w = Array<UInt8>(repeating: 0, count: variant.Nb * (variant.Nr + 1) * 4)
         for i in 0..<variant.Nk {
             for wordIdx in 0..<4 {
                 w[(4*i)+wordIdx] = key[(4*i)+wordIdx]
             }
         }
-
+        
         var tmp: Array<UInt8>
-
+        
         for i in variant.Nk..<variant.Nb * (variant.Nr + 1) {
             tmp = Array<UInt8>(repeating: 0, count: 4)
-
+            
             for wordIdx in 0..<4 {
                 tmp[wordIdx] = w[4*(i-1)+wordIdx]
             }
@@ -670,7 +662,7 @@ final private class AESCipher {
             } else if variant.Nk > 6 && (i % variant.Nk) == 4 {
                 tmp = subWord(tmp)
             }
-
+            
             // xor array of bytes
             for wordIdx in 0..<4 {
                 w[4*i+wordIdx] = w[4*(i-variant.Nk)+wordIdx]^tmp[wordIdx]
@@ -678,27 +670,27 @@ final private class AESCipher {
         }
         return convertExpandedKey(w)
     }
-
+    
 }
 
 extension AESCipher {
-
+    
     fileprivate func B0(_ x: UInt32) -> UInt32 {
         return x & 0xFF
     }
-
+    
     fileprivate func B1(_ x: UInt32) -> UInt32 {
         return (x >> 8) & 0xFF
     }
-
+    
     fileprivate func B2(_ x: UInt32) -> UInt32 {
         return (x >> 16) & 0xFF
     }
-
+    
     fileprivate func B3(_ x: UInt32) -> UInt32 {
         return (x >> 24) & 0xFF
     }
-
+    
     fileprivate func F1(_ x0: UInt32, _ x1: UInt32, _ x2: UInt32, _ x3: UInt32) -> UInt32 {
         var result: UInt32 = 0
         result |= UInt32(B1(T0[Int(x0 & 255)]))
@@ -707,40 +699,39 @@ extension AESCipher {
         result |= UInt32(B1(T0[Int(x3 >> 24)])) << 24
         return result
     }
-
+    
     fileprivate func calculateSBox() -> (sBox: Array<UInt32>, invSBox: Array<UInt32>) {
         var sbox = Array<UInt32>(repeating: 0, count: 256)
         var invsbox = sbox
         sbox[0] = 0x63
-
+        
         var p: UInt8 = 1, q: UInt8 = 1
-
+        
         repeat {
             #if swift(>=4.0)
             p = p ^ (UInt8(truncatingIfNeeded: Int(p) << 1) ^ ((p & 0x80) == 0x80 ? 0x1B : 0))
             #else
             p = p ^ (UInt8(truncatingBitPattern: Int(p) << 1) ^ ((p & 0x80) == 0x80 ? 0x1B : 0))
-
+            
             #endif
             q ^= q << 1
             q ^= q << 2
             q ^= q << 4
             q ^= (q & 0x80) == 0x80 ? 0x09 : 0
-
+            
             let s = 0x63 ^ q ^ rotateLeft(q, by: 1) ^ rotateLeft(q, by: 2) ^ rotateLeft(q, by: 3) ^ rotateLeft(q, by: 4)
-
+            
             sbox[Int(p)] = UInt32(s)
             invsbox[Int(s)] = UInt32(p)
         } while (p != 1)
-
+        
         return (sBox: sbox, invSBox: invsbox)
     }
 }
 
 // MARK: Foundation
-
 extension AESCipher {
-
+    
     convenience public init(key: String, iv: String) throws {
         guard let kkey = key.data(using: String.Encoding.utf8, allowLossyConversion: false)?.bytes,
             // swiftlint:disable conditional_binding_cascade
@@ -748,13 +739,12 @@ extension AESCipher {
                 // swiftlint:disable conditional_binding_cascade
                 throw Error.invalidKeyOrInitializationVector
         }
-
+        
         try self.init(key: kkey, iv: iiv)
     }
 }
 
 // MARK: - CBC
-
 // I have no better name for that
 private typealias CipherOperationOnBlock = ([UInt8]) -> [UInt8]?
 
@@ -762,13 +752,13 @@ private struct CBCBlockMode {
     enum BlockError: Swift.Error {
         case MissingInitializationVector
     }
-
+    
     func encrypt(blocks: [[UInt8]], iv: [UInt8]?, cipherOperation: CipherOperationOnBlock) throws -> [UInt8] {
         precondition(!blocks.isEmpty)
         guard let iv = iv else {
             throw BlockError.MissingInitializationVector
         }
-
+        
         var out: [UInt8] = [UInt8]()
         out.reserveCapacity(blocks.count * blocks[blocks.startIndex].count)
         var prevCiphertext = iv // for the first time prevCiphertext = iv
@@ -780,13 +770,13 @@ private struct CBCBlockMode {
         }
         return out
     }
-
+    
     func decrypt(blocks: [[UInt8]], iv: [UInt8]?, cipherOperation: CipherOperationOnBlock) throws -> [UInt8] {
         precondition(!blocks.isEmpty)
         guard let iv = iv else {
             throw BlockError.MissingInitializationVector
         }
-
+        
         var out: [UInt8] = [UInt8]()
         out.reserveCapacity(blocks.count * blocks[blocks.startIndex].count)
         var prevCiphertext = iv // for the first time prevCiphertext = iv
@@ -796,18 +786,17 @@ private struct CBCBlockMode {
             }
             prevCiphertext = ciphertext
         }
-
+        
         return out
     }
 }
 
 // MARK: - Padding
-
 private struct PKCS7 {
-
+    
     init() {
     }
-
+    
     func add(bytes: [UInt8], blockSize: Int) -> [UInt8] {
         let padding = UInt8(blockSize - (bytes.count % blockSize))
         var withPadding = bytes
@@ -824,16 +813,16 @@ private struct PKCS7 {
         }
         return withPadding
     }
-
+    
     func remove(bytes: [UInt8], blockSize: Int?) -> [UInt8] {
         let lastByte = bytes.last!
         let padding = Int(lastByte) // last byte
         let finalLength = bytes.count - padding
-
+        
         if finalLength < 0 {
             return bytes
         }
-
+        
         if padding >= 1 {
             return Array(bytes[0..<finalLength])
         }
@@ -842,7 +831,6 @@ private struct PKCS7 {
 }
 
 // MARK: - Utils
-
 private func xor(_ a: Array<UInt8>, _ b: Array<UInt8>) -> Array<UInt8> {
     var xored = Array<UInt8>(repeating: 0, count: min(a.count, b.count))
     for i in 0..<xored.count {
@@ -877,7 +865,7 @@ fileprivate extension UInt32 {
     init<T: Collection>(bytes: T) where T.Iterator.Element == UInt8, T.Index == Int {
         self = bytes.toInteger()
     }
-
+    
     func bytes(totalBytes: Int = MemoryLayout<UInt32>.size) -> Array<UInt8> {
         return arrayOfBytes(value: self, length: totalBytes)
     }
@@ -894,7 +882,7 @@ private func toUInt32Array(slice: ArraySlice<UInt8>) -> Array<UInt32> {
         val |= !slice.isEmpty ? UInt32(slice[idx]) : 0
         result.append(val)
     }
-
+    
     return result
 }
 
@@ -902,19 +890,19 @@ private func toUInt32Array(slice: ArraySlice<UInt8>) -> Array<UInt32> {
 /// I found this method slow
 private func arrayOfBytes<T>(value: T, length: Int? = nil) -> Array<UInt8> {
     let totalBytes = length ?? MemoryLayout<T>.size
-
+    
     let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
     valuePointer.pointee = value
-
+    
     let bytesPointer = UnsafeMutablePointer<UInt8>(OpaquePointer(valuePointer))
     var bytes = Array<UInt8>(repeating: 0, count: totalBytes)
     for j in 0..<min(MemoryLayout<T>.size, totalBytes) {
         bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
     }
-
+    
     valuePointer.deinitialize()
     valuePointer.deallocate(capacity: 1)
-
+    
     return bytes
 }
 
@@ -924,7 +912,7 @@ fileprivate extension Collection where Self.Iterator.Element == UInt8, Self.Inde
         if self.isEmpty {
             return 0
         }
-
+        
         let size = MemoryLayout<T>.size
         var bytes = self.reversed()
         if bytes.count < MemoryLayout<T>.size {
@@ -933,11 +921,11 @@ fileprivate extension Collection where Self.Iterator.Element == UInt8, Self.Inde
                 bytes += Array<UInt8>(repeating: 0, count: paddingCount)
             }
         }
-
+        
         if size == 1 {
             return T(truncatingIfNeeded: UInt64(bytes[0]))
         }
-
+        
         var result: T = 0
         for byte in bytes.reversed() {
             result = result << 8 | T(byte)
@@ -946,27 +934,27 @@ fileprivate extension Collection where Self.Iterator.Element == UInt8, Self.Inde
     }
     #else
     func toInteger<T: Integer>() -> T where T: ByteConvertible, T: BitshiftOperationsType {
-        if self.isEmpty {
-            return 0
-        }
-
-        var bytes = self.reversed()
-        if bytes.count < MemoryLayout<T>.size {
-            let paddingCount = MemoryLayout<T>.size - bytes.count
-            if paddingCount > 0 {
-                bytes += Array<UInt8>(repeating: 0, count: paddingCount)
-            }
-        }
-
-        if MemoryLayout<T>.size == 1 {
-            return T(truncatingBitPattern: UInt64(bytes[0]))
-        }
-
-        var result: T = 0
-        for byte in bytes.reversed() {
-            result = result << 8 | T(byte)
-        }
-        return result
+    if self.isEmpty {
+    return 0
+    }
+    
+    var bytes = self.reversed()
+    if bytes.count < MemoryLayout<T>.size {
+    let paddingCount = MemoryLayout<T>.size - bytes.count
+    if paddingCount > 0 {
+    bytes += Array<UInt8>(repeating: 0, count: paddingCount)
+    }
+    }
+    
+    if MemoryLayout<T>.size == 1 {
+    return T(truncatingBitPattern: UInt64(bytes[0]))
+    }
+    
+    var result: T = 0
+    for byte in bytes.reversed() {
+    result = result << 8 | T(byte)
+    }
+    return result
     }
     #endif
 }
@@ -997,9 +985,9 @@ extension String {
     /// cross-Swift-version-compatible characters count
     var length: Int {
         #if swift(>=3.2)
-            return self.count
+        return self.count
         #else
-            return self.characters.count
+        return self.characters.count
         #endif
     }
 }

@@ -170,7 +170,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         ]
         let paramJsonData = try? JSONSerialization.data(withJSONObject: plainParameters)
         cryptography.generateAESKey()
-        let encryptedDataWithAES = AES256CBC.encryptString(String(bytes: paramJsonData!, encoding: .utf8)!, password: UserDefaults.standard.string(forKey: "AES-Key")!)
+        let encryptedDataWithAES = AES.encryptString(String(bytes: paramJsonData!, encoding: .utf8)!, password: UserDefaults.standard.string(forKey: "AES-Key")!)
         
         let clearAESSecret = try! ClearMessage(string: UserDefaults.standard.string(forKey: "AES-Key")!, using: .utf8)
         let encryptedAESSecret = try! clearAESSecret.encrypted(with: try PublicKey(base64Encoded: UserDefaults.standard.string(forKey: "Server-Key")!), padding: .PKCS1)
@@ -190,7 +190,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
             let encrypted = try EncryptedMessage(base64Encoded: response["secret"]!)
             let privateKey = try PrivateKey(pemEncoded: UserDefaults.standard.value(forKey: "Client-PrivateKey")! as! String)
             let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
-            let decryptedData = AES256CBC.decryptString(response["data"]!, password: clearAESSecret)
+            let decryptedData = AES.decryptString(response["data"]!, password: clearAESSecret)
             let json = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
             
             return json!
