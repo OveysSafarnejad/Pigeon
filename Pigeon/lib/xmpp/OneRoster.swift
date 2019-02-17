@@ -111,6 +111,12 @@ extension OneRoster: XMPPRosterDelegate {
     public func xmppRoster(_ sender: XMPPRoster, didReceiveBuddyRequest presence:XMPPPresence) {
         //was let user
         _ = OneChat.sharedInstance.xmppRosterStorage.user(for: presence.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: managedObjectContext_roster())
+        
+        acceptBuddyRequestFrom(presence.fromStr!)
+    }
+    
+    public func xmppRoster(_ sender: XMPPRoster, didReceivePresenceSubscriptionRequest presence: XMPPPresence) {
+        acceptBuddyRequestFrom(presence.fromStr!)
     }
     
     public func xmppRosterDidEndPopulating(_ sender: XMPPRoster?) {
@@ -128,6 +134,7 @@ extension OneRoster: XMPPRosterDelegate {
         OneChat.sharedInstance.xmppStream?.send(presence)
     }
     
+    
     public func acceptBuddyRequestFrom(_ username: String) {
         let presence: DDXMLElement = DDXMLElement.element(withName: "presence") as! DDXMLElement
         presence.addAttribute(withName: "to", stringValue: username)
@@ -135,6 +142,7 @@ extension OneRoster: XMPPRosterDelegate {
         presence.addAttribute(withName: "type", stringValue: "subscribed")
         
         OneChat.sharedInstance.xmppStream?.send(presence)
+        sendBuddyRequestTo(username)
     }
     
     public func declineBuddyRequestFrom(_ username: String) {

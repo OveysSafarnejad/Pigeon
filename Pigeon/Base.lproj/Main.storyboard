@@ -541,7 +541,7 @@
         <scene sceneID="uoj-ki-uc9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kud-iZ-4Uw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="favorites" id="1zl-CH-LMP"/>
+                    <tabBarItem key="tabBarItem" systemItem="mostViewed" id="1zl-CH-LMP"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="t8K-I2-gxD">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -560,7 +560,7 @@
         <scene sceneID="D3w-M7-zbx">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wT4-4v-EMO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" systemItem="featured" id="GEJ-cI-ylb"/>
+                    <tabBarItem key="tabBarItem" systemItem="recents" id="GEJ-cI-ylb"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="3Sb-qv-pyl">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

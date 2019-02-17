@@ -28,7 +28,7 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
 
         if !OneChat.sharedInstance.isConnected() {
             
-            OneChat.sharedInstance.connect(username: UserDefaults.standard.string(forKey: "XMPPUser")! + UserDefaults.standard.string(forKey: "Domain")!, password: UserDefaults.standard.string(forKey: "XMPPPassword")!) { (stream, error) -> Void in
+            OneChat.sharedInstance.connect(username: UserDefaults.standard.string(forKey: "XMPPUser")! + "@" + UserDefaults.standard.string(forKey: "Domain")!, password: UserDefaults.standard.string(forKey: "XMPPPassword")!) { (stream, error) -> Void in
                 
                 if let _ = error {
                     let alertController = UIAlertController(title: "Sorry", message: "An error occured when connecting!: \(String(describing: error))", preferredStyle: UIAlertController.Style.alert)
@@ -142,22 +142,22 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
     
     private func syncContactList() {
         
-        let parameters : [String : String] = [
-            "numbers" : "\(self.contactsNumbers)",
-            "domain" : "\(UserDefaults.standard.string(forKey: "Domain")!)"
-        ]
-        let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
-        guard  let url = URL(string: Urls.BaseURL.BASE + Urls.URI.PHONE_VALIDATION) else {
-            return
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
-        let session = URLSession.shared
-        
-        session.dataTask(with: request) { (data, response, error) in
-        }
+//        let parameters : [String : String] = [
+//            "numbers" : "\(self.contactsNumbers)",
+//            "domain" : "\(UserDefaults.standard.string(forKey: "Domain")!)"
+//        ]
+//        let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
+//        guard  let url = URL(string: Urls.BaseURL.BASE + Urls.URI.PHONE_VALIDATION) else {
+//            return
+//        }
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.httpBody = jsonData
+//        let session = URLSession.shared
+//
+//        session.dataTask(with: request) { (data, response, error) in
+//        }
     }
     
 }
