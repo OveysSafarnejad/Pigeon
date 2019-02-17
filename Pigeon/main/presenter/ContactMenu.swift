@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Contact: UIViewController {
+class ContactMenu: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -14,6 +14,7 @@ public protocol OneRosterDelegate {
 }
 
 open class OneRoster: NSObject, NSFetchedResultsControllerDelegate {
+    
     open var delegate: OneRosterDelegate?
     open var fetchedResultsControllerVar: NSFetchedResultsController<NSFetchRequestResult>?
     
@@ -46,7 +47,9 @@ open class OneRoster: NSObject, NSFetchedResultsControllerDelegate {
     }
     
     open func fetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+        
         if fetchedResultsControllerVar == nil {
+            
             let moc = OneRoster.sharedInstance.managedObjectContext_roster() as NSManagedObjectContext?
             let entity = NSEntityDescription.entity(forEntityName: "XMPPUserCoreDataStorageObject", in: moc!)
             let sd1 = NSSortDescriptor(key: "sectionNum", ascending: true)

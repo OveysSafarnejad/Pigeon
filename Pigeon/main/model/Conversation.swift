@@ -11,7 +11,7 @@ import UIKit
 
 enum ConversationType : String {
     
-    case chat = "personal chat"
+    case chat = "personal"
     case group = "group"
     case channel = "channel"
 }

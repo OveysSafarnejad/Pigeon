@@ -33,6 +33,9 @@
 		24ADD1EA21EEFE8500BB7BF4 /* StartUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24ADD1E921EEFE8500BB7BF4 /* StartUpViewController.swift */; };
 		24D4A83C21F7485200BB03F3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24D4A83B21F7485200BB03F3 /* Constants.swift */; };
 		24DE736621F332FF00C5FB6D /* CompleteInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DE736521F332FF00C5FB6D /* CompleteInfoViewController.swift */; };
+		24E275D2220AD52B00E3702A /* SettingMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E275D1220AD52B00E3702A /* SettingMenu.swift */; };
+		24E275D4220AD58B00E3702A /* ContactMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E275D3220AD58B00E3702A /* ContactMenu.swift */; };
+		24E275D6220AD5AC00E3702A /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E275D5220AD5AC00E3702A /* Call.swift */; };
 		24EA0FD721FC471500D49137 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EA0FD621FC471500D49137 /* Cryptography.swift */; };
 		A6EBE3C6306E0BBB17736C33 /* Pods_Pigeon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5875CAAB685B5E500AE7BB8 /* Pods_Pigeon.framework */; };
 /* End PBXBuildFile section */
@@ -66,6 +69,9 @@
 		24ADD1E921EEFE8500BB7BF4 /* StartUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartUpViewController.swift; sourceTree = "<group>"; };
 		24D4A83B21F7485200BB03F3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		24DE736521F332FF00C5FB6D /* CompleteInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteInfoViewController.swift; sourceTree = "<group>"; };
+		24E275D1220AD52B00E3702A /* SettingMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingMenu.swift; sourceTree = "<group>"; };
+		24E275D3220AD58B00E3702A /* ContactMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMenu.swift; sourceTree = "<group>"; };
+		24E275D5220AD5AC00E3702A /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		24EA0FD621FC471500D49137 /* Cryptography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
 		6ED203663A966E93AF221666 /* Pods-Pigeon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pigeon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon.debug.xcconfig"; sourceTree = "<group>"; };
 		736D0F7D95A0EDE200CBBF0B /* Pods-Pigeon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pigeon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +103,9 @@
 			isa = PBXGroup;
 			children = (
 				247DDF5A21FD88E90071524B /* MainConversation.swift */,
+				24E275D1220AD52B00E3702A /* SettingMenu.swift */,
+				24E275D3220AD58B00E3702A /* ContactMenu.swift */,
+				24E275D5220AD5AC00E3702A /* Call.swift */,
 			);
 			path = presenter;
 			sourceTree = "<group>";
@@ -370,14 +379,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24E275D4220AD58B00E3702A /* ContactMenu.swift in Sources */,
 				2400924B21F829B800A45123 /* OnePresence.swift in Sources */,
 				2401728022006B110007CF33 /* Channel.swift in Sources */,
 				2411FE3221F07DF300CE9A2F /* OTPViewController.swift in Sources */,
 				247DDF5B21FD88E90071524B /* MainConversation.swift in Sources */,
 				2400924C21F829B800A45123 /* OneLastActivity.swift in Sources */,
+				24E275D2220AD52B00E3702A /* SettingMenu.swift in Sources */,
 				2400924921F829B800A45123 /* OneChat.swift in Sources */,
 				2401727A22006AA70007CF33 /* Contact.swift in Sources */,
 				24ADD1DB21EEFD6400BB7BF4 /* Pigeon.xcdatamodeld in Sources */,
+				24E275D6220AD5AC00E3702A /* Call.swift in Sources */,
 				2400924821F829B800A45123 /* OneRoom.swift in Sources */,
 				247DDF6821FD8EDA0071524B /* Conversation.swift in Sources */,
 				2400FEAD21F5C6080078EEB4 /* Urls.swift in Sources */,

@@ -28,8 +28,10 @@ open class OneChat: NSObject {
     var window: UIWindow?
     
     open var xmppStream: XMPPStream?
+    
     var xmppReconnect: XMPPReconnect?
     var xmppRosterStorage = XMPPRosterCoreDataStorage()
+    var xmppMuc : XMPPMUC?
     var xmppRoster: XMPPRoster?
     open var xmppLastActivity: XMPPLastActivity?
     var xmppvCardStorage: XMPPvCardCoreDataStorage?
@@ -93,6 +95,7 @@ open class OneChat: NSObject {
         
         //xmppRosterStorage = XMPPRosterCoreDataStorage()
         xmppRoster = XMPPRoster(rosterStorage: xmppRosterStorage)
+        xmppMuc = XMPPMUC()
         xmppRoster!.autoFetchRoster = true;
         xmppRoster!.autoAcceptKnownPresenceSubscriptionRequests = true;
         xmppvCardStorage = XMPPvCardCoreDataStorage.sharedInstance()
@@ -119,6 +122,7 @@ open class OneChat: NSObject {
         xmppCapabilities!.activate(xmppStream!)
         xmppMessageDeliveryRecipts!.activate(xmppStream!)
         xmppLastActivity!.activate(xmppStream!)
+        xmppMuc!.activate(xmppStream!)
         
         // Add ourself as a delegate to anything we may be interested in
         xmppStream!.addDelegate(self, delegateQueue: DispatchQueue.main)
@@ -137,10 +141,13 @@ open class OneChat: NSObject {
         xmppStream?.hostName = Constants.ServerInfo.SERVER_HOST
         xmppStream?.hostPort = Constants.ServerInfo.SERVER_PORT
         
+        xmppMuc?.addDelegate(self, delegateQueue: DispatchQueue.main)
+        
         customCertEvaluation = true
     }
     
     fileprivate func teardownStream() {
+        
         xmppStream!.removeDelegate(self)
         xmppRoster!.removeDelegate(self)
         xmppLastActivity!.removeDelegate(lastActivityTest)

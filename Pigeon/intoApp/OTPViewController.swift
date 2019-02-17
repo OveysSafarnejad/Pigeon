@@ -81,39 +81,23 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
                                 if dictionary["secret"] != nil && dictionary["data"] != nil {
                                     let res = self.openResponce(response: dictionary)
                                     
-                                    if let isRegistered = res["is_registered"] {
-                                        if (isRegistered == "false") {
-                                            
-                                            DispatchQueue.main.async { [unowned self] in
-                                                let completeInfoVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompleteInfoViewController") as! CompleteInfoViewController
-                                                self.navigationController?.pushViewController(completeInfoVC, animated: true)
-                                            }
-                                        } else {
-
-                                            if(res["username"] != nil && res["password"] != nil ) {
-                                                
-                                                UserDefaults.standard.set(res["username"], forKey: "XMPPUser")
-                                                UserDefaults.standard.set(res["password"], forKey: "XMPPPassword")
-                                                
-                                                DispatchQueue.main.async { [unowned self] in
-                                                    let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
-                                                    self.navigationController?.present(appMain, animated: true, completion: nil)
-                                                }
-                                                
-                                            } else {
-                                                DispatchQueue.main.async { [unowned self] in
-                                                    self.errorHandler(title: "Error!", message: "Can't connect, try again.")
-                                                }
-                                            }
+                                    if(res["username"] != nil && res["password"] != nil && res["domain"] != nil) {
+                                        
+                                        UserDefaults.standard.set(res["username"], forKey: "XMPPUser")
+                                        UserDefaults.standard.set(res["password"], forKey: "XMPPPassword")
+                                        UserDefaults.standard.set(res["domain"], forKey: "Domain")
+                                        
+                                        DispatchQueue.main.async { [unowned self] in
+                                            let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
+                                            self.navigationController?.present(appMain, animated: true, completion: nil)
                                         }
                                         
                                     } else {
-                                        
                                         DispatchQueue.main.async { [unowned self] in
-                                            self.errorHandler(title: "Error!", message: "Server response is invalid.")
+                                            self.errorHandler(title: "Error!", message: "Can't connect, try again.")
                                         }
                                     }
-                                    
+   
                                 } else {
                                     DispatchQueue.main.async { [unowned self] in
                                         self.errorHandler(title: "Error!", message: "Server response is invalid.")
@@ -128,10 +112,10 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
                         }
                     }
                 } else /* status code != 200 */ {
-                    
-                    DispatchQueue.main.async { [unowned self] in
-                        self.errorHandler(title: "Oops!", message: "Wrong OTP!")
-                    }
+
+                        DispatchQueue.main.async { [unowned self] in
+                            self.errorHandler(title: "Oops!", message: "Wrong OTP!")
+                        }
                 }
             }
             
@@ -193,7 +177,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
             let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
             let decryptedData = AES.decryptString(response["data"]!, password: clearAESSecret)
             let json = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [String: String]
-            
+            print(json)
             return json!
             
         } catch {
@@ -210,3 +194,41 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
     }
     
 }
+
+
+
+
+
+
+//if let isRegistered = res["is_registered"] {
+//    if (isRegistered == "false") {
+//
+//        DispatchQueue.main.async { [unowned self] in
+//            let completeInfoVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompleteInfoViewController") as! CompleteInfoViewController
+//            self.navigationController?.pushViewController(completeInfoVC, animated: true)
+//        }
+//    } else {
+//
+//        if(res["username"] != nil && res["password"] != nil ) {
+//
+//            UserDefaults.standard.set(res["username"], forKey: "XMPPUser")
+//            UserDefaults.standard.set(res["password"], forKey: "XMPPPassword")
+//
+//            DispatchQueue.main.async { [unowned self] in
+//                let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
+//                self.navigationController?.present(appMain, animated: true, completion: nil)
+//            }
+//
+//        } else {
+//            DispatchQueue.main.async { [unowned self] in
+//                self.errorHandler(title: "Error!", message: "Can't connect, try again.")
+//            }
+//        }
+//    }
+//
+//} else {
+//
+//    DispatchQueue.main.async { [unowned self] in
+//        self.errorHandler(title: "Error!", message: "Server response is invalid.")
+//    }
+//}

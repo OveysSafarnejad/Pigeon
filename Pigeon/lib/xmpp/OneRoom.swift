@@ -28,22 +28,20 @@ class OneRoom: NSObject {
         return OneRoomSingleton.instance
     }
     
-    //Handle nickname changes
     class func createRoom(_ roomName: String, delegate: AnyObject? = nil, completionHandler completion:@escaping OneRoomCreationCompletionHandler) {
         sharedInstance.didCreateRoomCompletionBlock = completion
        
         let roomMemoryStorage = XMPPRoomMemoryStorage()
         let domain = OneChat.sharedInstance.xmppStream!.myJID!.domain
-        let roomJID = XMPPJID(string: "\(roomName)@conference.\(domain)")
-        let xmppRoom = XMPPRoom.init(roomStorage: roomMemoryStorage!, jid: roomJID!, dispatchQueue: DispatchQueue.main)
+        let roomJID = XMPPJID(string: "\(roomName)@muclight.\(domain)")
+        let xmppRoom = XMPPRoom(roomStorage: roomMemoryStorage!, jid: roomJID!, dispatchQueue: DispatchQueue.main)
 
 
 
         xmppRoom.activate(OneChat.sharedInstance.xmppStream!)
         xmppRoom.addDelegate(delegate, delegateQueue: DispatchQueue.main)
-        //print(OneChat.sharedInstance.xmppStream!.myJID!.bare as String)
-        xmppRoom.join(usingNickname: OneChat.sharedInstance.xmppStream!.myJID!.bare, history: nil, password: nil)
-
+        //xmppRoom.join(usingNickname: OneChat.sharedInstance.xmppStream!.myJID!.bare, history: nil, password: nil)
+        xmppRoom.join(usingNickname: (XMPPJID(string: "oveys@localhost")?.bare)!, history: nil)
         xmppRoom.fetchConfigurationForm()
     }
 }

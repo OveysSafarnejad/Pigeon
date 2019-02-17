@@ -208,8 +208,6 @@ class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIIma
             "publickey" : "\(UserDefaults.standard.value(forKey: "Client-PublicKey")!)"
         ]
         let paramJsonData = try? JSONSerialization.data(withJSONObject: plainParameters)
-        
-        
         let encryptedDataWithAES = AES.encryptString(String(bytes: paramJsonData!, encoding: .utf8)!, password: UserDefaults.standard.string(forKey: "AES-Key")!)
         
         let clearAESSecret = try! ClearMessage(string: UserDefaults.standard.string(forKey: "AES-Key")!, using: .utf8)

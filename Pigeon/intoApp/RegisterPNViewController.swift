@@ -85,7 +85,11 @@ class RegisterPNViewController: UIViewController, UITextFieldDelegate, UIGesture
                         do {
                             if let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
                                 let serverPublicKey = dictionary["serverPublicKey"]!
+                                let tempOtp = dictionary["otp"]!
                                 UserDefaults.standard.set(serverPublicKey, forKey: "Server-Key")
+                                print("******************************************")
+                                print(tempOtp)
+                                print("******************************************")
                                 do {
                                     
                                     DispatchQueue.main.async { [unowned self] in

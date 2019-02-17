@@ -30,25 +30,25 @@ open class OnePresence: NSObject {
     
     class func goOnline() {
         
-        let presence = XMPPPresence()
-        let domain = OneChat.sharedInstance.xmppStream!.myJID!.domain
-        
-        if domain == "gmail.com" || domain == "gtalk.com" || domain == "talk.google.com" {
-            let priority: DDXMLElement = DDXMLElement(name: "priority", stringValue: "24")
-            presence.addChild(priority)
-        }
-        
+        let presence = XMPPPresence(type: "available")
+//        let domain = OneChat.sharedInstance.xmppStream!.myJID!.domain
+//        if domain == "gmail.com" || domain == "gtalk.com" || domain == "talk.google.com" {
+//            let priority: DDXMLElement = DDXMLElement(name: "priority", stringValue: "24")
+//            presence.addChild(priority)
+//        }
+//
         OneChat.sharedInstance.xmppStream?.send(presence)
     }
     
     class func goOffline() {
-        var _ = XMPPPresence(type: "unavailable")
+        let presence = XMPPPresence(type: "unavailable")
+        OneChat.sharedInstance.xmppStream?.send(presence)
     }
 }
 
 extension OnePresence: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive presence: XMPPPresence) {
-        print("did received presence : \(presence)")
+        print("did received presence from \(String(describing: presence.fromStr)) with value :\(presence)")
     }
 }

@@ -12,6 +12,7 @@ class SettingMenu: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("setting")
     }
     
     

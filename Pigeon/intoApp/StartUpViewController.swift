@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Contacts
 
 class StartUpViewController: UIViewController {
     
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var iconImage: UIImageView!
+    var contactsNumbers : [String] = []
     
     
     override func viewDidLoad() {
