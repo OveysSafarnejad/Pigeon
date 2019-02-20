@@ -18,8 +18,11 @@ class Cryptography {
         let privateKey = keyPair.privateKey
         let publicKey = keyPair.publicKey
         
-        UserDefaults.standard.set(try! SwKeyConvert.PublicKey.derToPKCS8PEM(publicKey.data()),
-                                  forKey: "Client-PublicKey")
+        var replaced = try! SwKeyConvert.PublicKey.derToPKCS8PEM(publicKey.data()).replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "")
+        replaced = replaced.replacingOccurrences(of: "-----END PUBLIC KEY-----", with: "")
+        replaced = String(replaced.filter { !" \n".contains($0) })
+        
+        UserDefaults.standard.set(replaced, forKey: "Client-PublicKey")
         
         UserDefaults.standard.set(try! SwKeyConvert.PrivateKey.derToPKCS1PEM(privateKey.data()),
                                   forKey: "Client-PrivateKey")

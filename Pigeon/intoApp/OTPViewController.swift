@@ -148,6 +148,8 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
     func createRequestJson() -> Data {
         let cryptography = Cryptography()
         cryptography.generateRSAKeys()
+        
+        
         let plainParameters : [String : String] = [
             "publickey" : "\(UserDefaults.standard.value(forKey: "Client-PublicKey")!)",
             "otp"    : "\(otpTextfield.text!)",

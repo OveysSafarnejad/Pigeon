@@ -19,5 +19,6 @@ struct Urls {
         static let OTP_VALIDATION = "/verify"
         static let IMAGE_PATH = "/img"
         static let INFORMATION = "/info"
+        static let CONTACT = "/contacts"
     }
 }
