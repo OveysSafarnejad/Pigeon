@@ -37,6 +37,7 @@
 		24E275D4220AD58B00E3702A /* ContactMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E275D3220AD58B00E3702A /* ContactMenu.swift */; };
 		24E275D6220AD5AC00E3702A /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E275D5220AD5AC00E3702A /* Call.swift */; };
 		24EA0FD721FC471500D49137 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EA0FD621FC471500D49137 /* Cryptography.swift */; };
+		24EC56A4221EB55700F9BEFB /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24EC56A3221EB55700F9BEFB /* Registration.storyboard */; };
 		A6EBE3C6306E0BBB17736C33 /* Pods_Pigeon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5875CAAB685B5E500AE7BB8 /* Pods_Pigeon.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		24E275D3220AD58B00E3702A /* ContactMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMenu.swift; sourceTree = "<group>"; };
 		24E275D5220AD5AC00E3702A /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		24EA0FD621FC471500D49137 /* Cryptography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; };
+		24EC56A3221EB55700F9BEFB /* Registration.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Registration.storyboard; sourceTree = "<group>"; };
 		6ED203663A966E93AF221666 /* Pods-Pigeon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pigeon.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon.debug.xcconfig"; sourceTree = "<group>"; };
 		736D0F7D95A0EDE200CBBF0B /* Pods-Pigeon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pigeon.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pigeon/Pods-Pigeon.release.xcconfig"; sourceTree = "<group>"; };
 		A5875CAAB685B5E500AE7BB8 /* Pods_Pigeon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pigeon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,6 +164,7 @@
 				24ADD1DE21EEFD6500BB7BF4 /* LaunchScreen.storyboard */,
 				24ADD1E121EEFD6500BB7BF4 /* Info.plist */,
 				24ADD1D921EEFD6400BB7BF4 /* Pigeon.xcdatamodeld */,
+				24EC56A3221EB55700F9BEFB /* Registration.storyboard */,
 			);
 			path = Pigeon;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				24ADD1E021EEFD6500BB7BF4 /* LaunchScreen.storyboard in Resources */,
+				24EC56A4221EB55700F9BEFB /* Registration.storyboard in Resources */,
 				24ADD1DD21EEFD6500BB7BF4 /* Assets.xcassets in Resources */,
 				24ADD1D821EEFD6400BB7BF4 /* Main.storyboard in Resources */,
 			);

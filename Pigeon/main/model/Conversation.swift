@@ -17,6 +17,7 @@ enum ConversationType : String {
 }
 
 enum LastMessageState : String {
+    
     case sent
     case sending
     case seen
@@ -166,9 +167,6 @@ class ConversationMapping {
             _contact = contact
         }
     }
-    
-    
-    
     
     
     init(conversationId : String , conversationType : ConversationType , isMuted : Bool , isPinned : Bool , lastSeenDate : String , lastUpdate : String , lastMessageId : String , noMoreMessages : Bool , unreadCount : Int , hiddenConversation : Bool , lastMessageState : LastMessageState , draftMessage : String , messages : [Message] , contact : ContactMapping) {

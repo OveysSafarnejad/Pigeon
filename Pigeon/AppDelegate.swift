@@ -16,6 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        if let _ = UserDefaults.standard.string(forKey: "XMPPUser"), let _ = UserDefaults.standard.string(forKey: "XMPPPassword"), let _ = UserDefaults.standard.string(forKey: "Domain")
+        {
+            let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            self.window?.rootViewController = mainStoryboard.instantiateInitialViewController()
+        }
+        else
+        {
+            let registrationStoryboard = UIStoryboard(name: "Registration", bundle: nil)
+            self.window?.rootViewController = registrationStoryboard.instantiateInitialViewController()
+        }
+        
         OneChat.start(true, delegate: nil) { (stream, error) -> Void in
             if let _ = error {
                 //handle start errors here
