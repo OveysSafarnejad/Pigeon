@@ -24,8 +24,8 @@ enum LastMessageState : String {
     case not_seen
 }
 
-class ConversationMapping  {
-    
+class ConversationMapping {
+
     var conversationId : String!
     var conversationType : ConversationType!
     var isMuted : Bool!
@@ -40,11 +40,9 @@ class ConversationMapping  {
     var draftMessage : String!
     var messages : [Message]!
     var contact : Contact!
-    
-    
-    
-    
-    
+
+
+
     init(conversationId : String , conversationType : ConversationType , isMuted : Bool , isPinned : Bool , lastSeenDate : String , lastUpdate : String , lastMessageId : String , noMoreMessages : Bool , unreadCount : Int , hiddenConversation : Bool , lastMessageState : LastMessageState , draftMessage : String , messages : [Message] , contact : Contact) {
         
         self.conversationId = conversationId
