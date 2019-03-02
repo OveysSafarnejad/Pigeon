@@ -134,7 +134,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         
         sendBtn = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(sendBtnTapped))
         sendBtn.isEnabled = false
-        otpLabel.text = "OTP has been sent to the\n +98 \(passedPhoneNumber!), Type it below and Enjoy"
+        //otpLabel.text = "OTP has been sent to the\n +98 \(passedPhoneNumber!), Type it below and Enjoy"
         otpTextfield.keyboardType = .asciiCapableNumberPad
         navigationItem.rightBarButtonItem = sendBtn
         otpTextfield.delegate = self
@@ -142,7 +142,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         let gestuere = UITapGestureRecognizer(target: self, action: #selector(viewTapped(sender:)))
         gestuere.delegate = self
         self.view.addGestureRecognizer(gestuere)
-        otpTextfield.attributedPlaceholder = NSAttributedString(string: "- - - - -", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(red: 0.0/255.0, green: 173.0/255.0, blue: 235.0/255.0, alpha: 0.5)])
+        otpTextfield.attributedPlaceholder = NSAttributedString(string: "-----", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(red: 0.0/255.0, green: 173.0/255.0, blue: 235.0/255.0, alpha: 0.5)])
     }
     
     func createRequestJson() -> Data {

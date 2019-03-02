@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyRSA
+import Contacts
 
 class CompleteInfoViewController: UIViewController,  UITextFieldDelegate , UIImagePickerControllerDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate {
     

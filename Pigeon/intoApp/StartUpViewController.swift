@@ -40,7 +40,7 @@ class StartUpViewController: UIViewController {
     //MARK:- Actions
     @IBAction func registerButtonTouchUpInside(_ sender: Any) {
         
-        let registerPNVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterPNViewController")
+        let registerPNVC = UIStoryboard.init(name: "Registration", bundle: nil).instantiateViewController(withIdentifier: "RegisterPNViewController")
         self.navigationController?.pushViewController(registerPNVC, animated: true)
     }
 }

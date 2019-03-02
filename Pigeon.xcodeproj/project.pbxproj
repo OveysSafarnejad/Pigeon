@@ -556,15 +556,17 @@
 			baseConfigurationReference = 6ED203663A966E93AF221666 /* Pods-Pigeon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 67A243Q44S;
+				DEVELOPMENT_TEAM = KY778HWXP2;
 				INFOPLIST_FILE = Pigeon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meraj.messenger.Pigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meraj.messenger.Pigeon1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -575,15 +577,17 @@
 			baseConfigurationReference = 736D0F7D95A0EDE200CBBF0B /* Pods-Pigeon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 67A243Q44S;
+				DEVELOPMENT_TEAM = KY778HWXP2;
 				INFOPLIST_FILE = Pigeon/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meraj.messenger.Pigeon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meraj.messenger.Pigeon1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

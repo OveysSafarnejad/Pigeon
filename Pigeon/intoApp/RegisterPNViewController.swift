@@ -148,7 +148,7 @@ class RegisterPNViewController: UIViewController, UITextFieldDelegate, UIGesture
         gestuere.delegate = self
         self.view.addGestureRecognizer(gestuere)
         mobileTextfield.keyboardType = .asciiCapableNumberPad
-        mobileTextfield.attributedPlaceholder = NSAttributedString(string: "Phone Number", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(red: 0.0/255.0, green: 173.0/255.0, blue: 235.0/255.0, alpha: 0.5)])
+        mobileTextfield.attributedPlaceholder = NSAttributedString(string: "Mobile", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(red: 0.0/255.0, green: 173.0/255.0, blue: 235.0/255.0, alpha: 0.5)])
     }
     
     
