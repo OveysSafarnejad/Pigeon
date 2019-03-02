@@ -23,6 +23,10 @@ class ContactMenu: UIViewController {
         print("contact")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.manageContact()
+    }
+    
     
     private func manageContact() {
         
@@ -49,7 +53,10 @@ class ContactMenu: UIViewController {
                             editing = editing.replacingOccurrences(of: ")", with: "")
                             editing = editing.deletingPrefix("0")
                             editing = editing.deletingPrefix("+98")
-                            self.contactsNumbers.append(editing)
+                            if(!self.exist(number: editing)) {
+                                self.contactsNumbers.append(editing)
+                            }
+                            
                         }
                     })
                 } catch {
@@ -57,7 +64,7 @@ class ContactMenu: UIViewController {
                 }
             } else {
                 
-                let alertController = UIAlertController(title: "Sorry!", message: "can't access to contacts.", preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Sorry!", message: "can't access to contacts. please allow pigeon to access you contacts in setting.", preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
                 }))
                 self.present(alertController, animated: true, completion: nil)
@@ -135,7 +142,7 @@ class ContactMenu: UIViewController {
                                         
                                         UserDefaults.standard.set(self.contactWithAccount, forKey: "Contacts")
                                         
-                                    }else {
+                                    } else {
                                         print("none of the phone contacts has account")
                                     }
                                 }
@@ -201,11 +208,21 @@ class ContactMenu: UIViewController {
             let clearAESSecret = try encrypted.decrypted(with: privateKey, padding: .PKCS1).string(encoding: .utf8)
             let decryptedData = AES.decryptString(response["data"]!, password: clearAESSecret)
             let json = try JSONSerialization.jsonObject(with: (decryptedData?.data(using: .utf8))!, options: []) as? [Dictionary<String,Any>]
-            //print(json)
             return json!
             
         } catch {
             return []
         }
+    }
+    
+    func exist(number : String) -> Bool {
+        var exist = false
+        for finded in contactsNumbers {
+            if number == finded {
+                exist = true
+                break
+            }
+        }
+        return exist
     }
 }

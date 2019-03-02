@@ -91,11 +91,11 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
         self.mainConversationTableView.tableFooterView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: 10.0))
         self.mainConversationTableView.backgroundColor = .clear
     }
-
-    
-    
-    
 }
+
+
+
+
 
 
 extension String {
