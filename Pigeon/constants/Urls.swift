@@ -11,7 +11,7 @@ import Foundation
 struct Urls {
     
     struct BaseURL {
-        static let BASE = "http://192.168.100.7:2525"
+        static let BASE = "http://46.100.54.218:8084"
     }
     
     struct URI {

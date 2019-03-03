@@ -10,19 +10,17 @@ import UIKit
 import XMPPFramework
 
 
-
 class MainConversation: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     @IBOutlet weak var mainConversationTableView: UITableView!
-    private var conversations : [Conversation] = []
-
+    private var conversations : [ConversationMapping] = []
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("chat")
-        //manageContact()
         
         
         //FIXME: send request to server for fetch conversations by xmpp params saved on user defaults
@@ -64,13 +62,13 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell : ConversationCell = self.mainConversationTableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath)  as? ConversationCell {
+        if let cell = self.mainConversationTableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as? ConversationCellUITableViewCell {
             
             cell.configureCell(conversation: conversations[indexPath.row])
             return cell
             
         } else {
-            return ConversationCell()
+            return ConversationCellUITableViewCell()
         }
     }
     
@@ -87,9 +85,10 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
         mainConversationTableView.delegate = self
         mainConversationTableView.dataSource = self
         mainConversationTableView.separatorStyle = .none
-        //self.tableData = [[NSMutableArray alloc] init];
         self.mainConversationTableView.tableFooterView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: 10.0))
         self.mainConversationTableView.backgroundColor = .clear
+        
+        mainConversationTableView.register(UINib(nibName: "ConversationCellUITableViewCell", bundle: nil), forCellReuseIdentifier: "ConversationCell")
     }
 }
 

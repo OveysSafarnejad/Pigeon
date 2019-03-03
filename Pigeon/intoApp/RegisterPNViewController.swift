@@ -93,7 +93,7 @@ class RegisterPNViewController: UIViewController, UITextFieldDelegate, UIGesture
                                 do {
                                     
                                     DispatchQueue.main.async { [unowned self] in
-                                        let otpVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "OTPViewController") as! OTPViewController
+                                        let otpVC = UIStoryboard(name: "Registration", bundle: nil).instantiateViewController(withIdentifier: "OTPViewController") as! OTPViewController
                                         otpVC.passedPhoneNumber = self.mobileTextfield.text!
                                         self.navigationController?.pushViewController(otpVC, animated: true)
                                     }
@@ -150,31 +150,5 @@ class RegisterPNViewController: UIViewController, UITextFieldDelegate, UIGesture
         mobileTextfield.keyboardType = .asciiCapableNumberPad
         mobileTextfield.attributedPlaceholder = NSAttributedString(string: "Mobile", attributes: [NSAttributedString.Key.foregroundColor: UIColor.init(red: 0.0/255.0, green: 173.0/255.0, blue: 235.0/255.0, alpha: 0.5)])
     }
-    
-    
-    //    func sendMessageToServer() {
-    //
-    //        let test: String = "this is a test"
-    //        let clear = try! ClearMessage(string: test, using: .utf8)
-    //        let encrypted = try! clear.encrypted(with: serverPublicKey as! PublicKey, padding: .PKCS1)
-    //        let enc = encrypted.base64String
-    //
-    //
-    //        let parameters : [String : String] = [
-    //            "result" : "\(enc)"
-    //        ]
-    //        let jsonData = try? JSONSerialization.data(withJSONObject: parameters)
-    //        guard  let url = URL(string: "http://192.168.100.4:3030/decrypt") else {
-    //            return
-    //        }
-    //        var request = URLRequest(url: url)
-    //        request.httpMethod = "POST"
-    //        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    //        request.httpBody = jsonData
-    //        let session = URLSession.shared
-    //
-    //        session.dataTask(with: request) { (data, response, error) in
-    //
-    //        }.resume()
-    //    }
+
 }

@@ -29,6 +29,7 @@ class ConversationMapping {
 
     private var _conversationId : String!
     private var _conversationType : ConversationType!
+    private var _conversationPicture : String!
     private var _isMuted : Bool!
     private var _isPinned : Bool!
     private var _lastSeenDate : String!
@@ -39,7 +40,7 @@ class ConversationMapping {
     private var _hiddenConversation : Bool!
     private var _lastMessageState : LastMessageState!
     private var _draftMessage : String!
-    private var _messages : [Message]!
+    private var _messages : [MessageMapping]!
     private var _contact : ContactMapping!
     
     var conversationId : String {
@@ -57,6 +58,15 @@ class ConversationMapping {
         }
         set(conversationType) {
             _conversationType = conversationType
+        }
+    }
+    
+    var conversationPicture : String {
+        get {
+            return _conversationPicture
+        }
+        set(conversationPicture) {
+            _conversationPicture = conversationPicture
         }
     }
     
@@ -150,7 +160,7 @@ class ConversationMapping {
         }
     }
     
-    var messages : [Message] {
+    var messages : [MessageMapping] {
         get {
             return _messages
         }
@@ -169,10 +179,11 @@ class ConversationMapping {
     }
     
     
-    init(conversationId : String , conversationType : ConversationType , isMuted : Bool , isPinned : Bool , lastSeenDate : String , lastUpdate : String , lastMessageId : String , noMoreMessages : Bool , unreadCount : Int , hiddenConversation : Bool , lastMessageState : LastMessageState , draftMessage : String , messages : [Message] , contact : ContactMapping) {
+    init(conversationId : String , conversationType : ConversationType , conversationPicture : String , isMuted : Bool , isPinned : Bool , lastSeenDate : String , lastUpdate : String , lastMessageId : String , noMoreMessages : Bool , unreadCount : Int , hiddenConversation : Bool , lastMessageState : LastMessageState , draftMessage : String , messages : [MessageMapping] , contact : ContactMapping) {
         
         self._conversationId = conversationId
         self._conversationType = conversationType
+        self._conversationPicture = conversationPicture
         self._isMuted = isMuted
         self._isPinned = isPinned
         self._lastSeenDate = lastSeenDate

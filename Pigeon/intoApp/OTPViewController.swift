@@ -134,7 +134,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
         
         sendBtn = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(sendBtnTapped))
         sendBtn.isEnabled = false
-        //otpLabel.text = "OTP has been sent to the\n +98 \(passedPhoneNumber!), Type it below and Enjoy"
+        otpLabel.text = "passcode has been sent to the +98\(passedPhoneNumber!)"
         otpTextfield.keyboardType = .asciiCapableNumberPad
         navigationItem.rightBarButtonItem = sendBtn
         otpTextfield.delegate = self
