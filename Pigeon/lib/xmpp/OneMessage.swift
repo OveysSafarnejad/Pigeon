@@ -195,6 +195,7 @@ extension OneMessage: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         
+        
         let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
     
         if !OneChats.knownUserForJid(jidStr:(user?.jidStr)!) {

@@ -94,9 +94,6 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
 
 
 
-
-
-
 extension String {
     
     func deletingPrefix(_ prefix: String) -> String {
