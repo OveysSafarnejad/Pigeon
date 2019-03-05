@@ -110,9 +110,16 @@
 			children = (
 				246EA032222B9A730002077A /* ConversationCellUITableViewCell.swift */,
 				246EA033222B9A730002077A /* ConversationCellUITableViewCell.xib */,
-				24887CF3222D45C5009408D9 /* SettingMenuGeneralCell.swift */,
 			);
 			path = conversationCell;
+			sourceTree = "<group>";
+		};
+		247252D0222E6B1E00619766 /* settingMenuCell */ = {
+			isa = PBXGroup;
+			children = (
+				24887CF3222D45C5009408D9 /* SettingMenuGeneralCell.swift */,
+			);
+			path = settingMenuCell;
 			sourceTree = "<group>";
 		};
 		247DDF5C21FD89800071524B /* presenter */ = {
@@ -129,6 +136,7 @@
 		247DDF5D21FD898B0071524B /* cell */ = {
 			isa = PBXGroup;
 			children = (
+				247252D0222E6B1E00619766 /* settingMenuCell */,
 				246EA031222B9A110002077A /* conversationCell */,
 			);
 			path = cell;

@@ -14,7 +14,8 @@ class SettingMenu: UIViewController ,UITableViewDelegate , UITableViewDataSource
     
     
     @IBOutlet weak var settingGroupedTableView: UITableView!
-    let settingMenu : [String] = ["Appearance" ,"Privacy" ,"Data" ,"Notification" ,"Language"]
+    let settingMenu : [String] = ["Notifications and Alerts" , "Security and Privacy" ,"Data and Storage" ,"Appearance"  ,"Language"]
+    let settingAbout : [String] = ["Questions" , "About Pigeon"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,14 @@ class SettingMenu: UIViewController ,UITableViewDelegate , UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if (indexPath.section == 0) {
+            
+            if let cell = self.settingGroupedTableView.dequeueReusableCell(withIdentifier: "SettingMenuCell", for: indexPath) as? SettingMenuGeneralCell {
+                
+                return cell.configureCell(menu: settingMenu[indexPath.row])
+                
+            } else {
+                return ConversationCellUITableViewCell()
+            }
 
         } else if (indexPath.section == 1) {
             
@@ -52,6 +61,14 @@ class SettingMenu: UIViewController ,UITableViewDelegate , UITableViewDataSource
             }
             
         } else {
+            
+            if let cell = self.settingGroupedTableView.dequeueReusableCell(withIdentifier: "SettingMenuCell", for: indexPath) as? SettingMenuGeneralCell {
+                
+                return cell.configureCell(menu: settingAbout[indexPath.row])
+                
+            } else {
+                return ConversationCellUITableViewCell()
+            }
 
         }
         return ConversationCellUITableViewCell()

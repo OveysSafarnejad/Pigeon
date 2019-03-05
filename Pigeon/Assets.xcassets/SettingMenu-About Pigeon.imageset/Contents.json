@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "favicon-16x16.png",
+      "filename" : "dove(2).png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "favicon-32x32.png",
+      "filename" : "dove(3).png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "apple-icon-60x60.png",
+      "filename" : "dove(6).png",
       "scale" : "3x"
     }
   ],
