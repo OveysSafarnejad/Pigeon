@@ -42,12 +42,12 @@ class SettingMenu: UIViewController ,UITableViewDelegate , UITableViewDataSource
 
         if (indexPath.section == 0) {
             
-            if let cell = self.settingGroupedTableView.dequeueReusableCell(withIdentifier: "SettingMenuCell", for: indexPath) as? SettingMenuGeneralCell {
+            if let cell = self.settingGroupedTableView.dequeueReusableCell(withIdentifier: "ProfileForSettingMenu", for: indexPath) as? ProfileForSettingCell {
                 
-                return cell.configureCell(menu: settingMenu[indexPath.row])
+                return cell.configureCell()
                 
             } else {
-                return ConversationCellUITableViewCell()
+                return ProfileForSettingCell()
             }
 
         } else if (indexPath.section == 1) {
@@ -69,18 +69,26 @@ class SettingMenu: UIViewController ,UITableViewDelegate , UITableViewDataSource
             } else {
                 return ConversationCellUITableViewCell()
             }
-
+            
+            
         }
-        return ConversationCellUITableViewCell()
 
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.01
-    }
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 0.01
+//    }
+//    
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        return UIView()
+//    }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if(indexPath.section == 0) {
+            return 80
+        } else {
+            return settingGroupedTableView.rowHeight
+        }
     }
     
     func setTableView() {
@@ -89,6 +97,7 @@ class SettingMenu: UIViewController ,UITableViewDelegate , UITableViewDataSource
         settingGroupedTableView.separatorStyle = .none
         self.settingGroupedTableView.tableFooterView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: 10.0))
         self.settingGroupedTableView.backgroundColor = .clear
+        self.settingGroupedTableView.register(UINib(nibName: "ProfileForSettingCell", bundle: nil), forCellReuseIdentifier: "ProfileForSettingMenu")
     }
     
 }
