@@ -10,6 +10,7 @@ import UIKit
 import Contacts
 import SwiftyRSA
 import SwCrypt
+import CoreData
 
 class ContactMenu: UIViewController {
     
@@ -79,8 +80,8 @@ class ContactMenu: UIViewController {
     
     private func syncContactList() {
         
-        let parameters : [String : String] = [
-            "numbers" : "\(self.contactsNumbers)",
+        let parameters : [String : Any] = [
+            "numbers" : self.contactsNumbers,
             "domain" : "\(UserDefaults.standard.string(forKey: "Domain")!)",
             "publickey" : "\(UserDefaults.standard.value(forKey: "Client-PublicKey")!)"
         ]
@@ -121,7 +122,7 @@ class ContactMenu: UIViewController {
                                     
                                     if(res.count > 0) {
                                         
-                                        let singleContact = ContactMapping()
+                                        var singleContact = ContactMapping()
                                         for temp in res {
                                             
                                             print(temp)
@@ -138,9 +139,11 @@ class ContactMenu: UIViewController {
                                             }
                                             
                                             self.contactWithAccount.append(singleContact)
+                                            singleContact = ContactMapping()
                                         }
                                         
-                                        UserDefaults.standard.set(self.contactWithAccount, forKey: "Contacts")
+                                        self.saveContactsToContext(contacts: self.contactWithAccount)
+                                        
                                         
                                     } else {
                                         print("none of the phone contacts has account")
@@ -181,7 +184,7 @@ class ContactMenu: UIViewController {
                         for number in contact.phoneNumbers {
                             if (number.value.stringValue.contains(mobile)){
                                 
-                                contactName = contact.givenName + contact.familyName
+                                contactName = contact.givenName + " " + contact.familyName
                             }
                         }
                     })
@@ -224,5 +227,47 @@ class ContactMenu: UIViewController {
             }
         }
         return exist
+    }
+    
+    func saveContactsToContext(contacts : [ContactMapping]) {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        for contact in contacts {
+            
+            let saving = NSEntityDescription.insertNewObject(forEntityName: "Contact", into: context)
+            saving.setValue(contact.contactName, forKey: "name")
+            saving.setValue(contact.appName, forKey: "app_name")
+            saving.setValue(contact.mobile, forKey: "mobile")
+            saving.setValue(contact.status, forKey: "status")
+            saving.setValue(contact.username, forKey: "username")
+            
+            do {
+                try context.save()
+                print("Success")
+            } catch {
+                print("Error saving: \(error)")
+            }
+        }
+        
+        let fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Contact")
+        
+        do {
+            var fetchedContacts = try context.fetch(fetchRequest)
+
+            for fetched in fetchedContacts {
+                
+                print(fetched.value(forKey: "name"))
+                
+            }
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
     }
 }

@@ -22,7 +22,7 @@ public protocol OneChatDelegate {
     func oneStreamDidDisconnect(_ sender: XMPPStream, withError error: NSError)
 }
 
-open class OneChat: NSObject {
+open class OneChat: NSObject, XMPPRoomDelegate {
     
     var delegate: OneChatDelegate?
     var window: UIWindow?
@@ -302,4 +302,28 @@ extension OneChat: XMPPStreamDelegate {
     public func xmppStream(_ sender: XMPPStream, didNotRegister error: DDXMLElement) {
         
     }
+    
+    
+    
+    
+    
+    
+    //MARK:- XMPPRomDelegate
+    public func xmppRoom(_ sender: XMPPRoom, didConfigure iqResult: XMPPIQ) {
+        
+    }
+    
+    public func xmppRoomDidCreate(_ sender: XMPPRoom) {
+        
+    }
+    
+    public func xmppRoomDidJoin(_ sender: XMPPRoom) {
+        
+    }
+    
+    public func xmppRoom(_ sender: XMPPRoom, didNotConfigure iqResult: XMPPIQ) {
+        
+    }
+    
+
 }

@@ -46,9 +46,9 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
         super.viewWillAppear(true)
         self.mainConversationTableView.reloadData()
         
-        //        OneRoom.createRoom("javadRoom", completionHandler: { (XMPPRoom) in
-        //
-        //        })
+                OneRoom.createRoom("javadRoom", completionHandler: { (XMPPRoom) in
+        
+                })
     }
     
     //MARK- tableview data source

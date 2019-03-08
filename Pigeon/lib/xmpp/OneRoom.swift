@@ -15,7 +15,7 @@ protocol OneRoomDelegate {
     //func onePresenceDidReceivePresence()
 }
 
-class OneRoom: NSObject {
+class OneRoom: NSObject, XMPPRoomDelegate {
     var delegate: OneRoomDelegate?
     
     var didCreateRoomCompletionBlock: OneRoomCreationCompletionHandler?
@@ -39,14 +39,34 @@ class OneRoom: NSObject {
 
 
         xmppRoom.activate(OneChat.sharedInstance.xmppStream!)
-        xmppRoom.addDelegate(delegate, delegateQueue: DispatchQueue.main)
-        //xmppRoom.join(usingNickname: OneChat.sharedInstance.xmppStream!.myJID!.bare, history: nil, password: nil)
-        xmppRoom.join(usingNickname: (XMPPJID(string: "oveys@localhost")?.bare)!, history: nil)
+        xmppRoom.addDelegate(self, delegateQueue: DispatchQueue.main)
+        xmppRoom.join(usingNickname: OneChat.sharedInstance.xmppStream!.myJID!.bare, history: nil, password: nil)
+//        xmppRoom.join(usingNickname: (XMPPJID(string: "oveys@localhost")?.bare)!, history: nil)
         xmppRoom.fetchConfigurationForm()
     }
+    
+    func xmppRoom(_ sender: XMPPRoom, didConfigure iqResult: XMPPIQ) {
+        
+    }
+    
+    func xmppRoomDidCreate(_ sender: XMPPRoom) {
+        
+    }
+    
+    
+    
+    func xmppRoom(_ sender: XMPPRoom, didNotConfigure iqResult: XMPPIQ) {
+        
+    }
+    
+    
+    func xmppRoomDidJoin(_ sender: XMPPRoom) {
+        
+    }
+    
 }
 
-extension OneRoom: XMPPRoomDelegate {
+/*extension OneRoom: XMPPRoomDelegate {
     /**
      * Invoked with the results of a request to fetch the configuration form.
      * The given config form will look something like:
@@ -160,4 +180,4 @@ extension OneRoom: XMPPRoomDelegate {
     func xmppRoom(_ sender: XMPPRoom!, didNotEditPrivileges iqError: XMPPIQ!) {
         //
     }
-}
+}*/
