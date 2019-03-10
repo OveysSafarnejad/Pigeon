@@ -17,8 +17,9 @@ public protocol OnePresenceDelegate {
 open class OnePresence: NSObject {
     var delegate: OnePresenceDelegate?
     
-    // MARK: Singleton
     
+    
+    // MARK: Singleton
     class var sharedInstance : OnePresence {
         struct OnePresenceSingleton {
             static let instance = OnePresence()
@@ -31,12 +32,6 @@ open class OnePresence: NSObject {
     class func goOnline() {
         
         let presence = XMPPPresence(type: "available")
-//        let domain = OneChat.sharedInstance.xmppStream!.myJID!.domain
-//        if domain == "gmail.com" || domain == "gtalk.com" || domain == "talk.google.com" {
-//            let priority: DDXMLElement = DDXMLElement(name: "priority", stringValue: "24")
-//            presence.addChild(priority)
-//        }
-//
         OneChat.sharedInstance.xmppStream?.send(presence)
     }
     
@@ -49,6 +44,27 @@ open class OnePresence: NSObject {
 extension OnePresence: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive presence: XMPPPresence) {
-        print("did received presence from \(String(describing: presence.fromStr)) with value :\(presence)")
+        print("did receive presence")
+        print(presence)
+        print("\n\n")
+    }
+    
+    public func xmppStream(_ sender: XMPPStream, didSend presence: XMPPPresence) {
+        print("did send presence")
+        print(presence)
+        print("\n\n")
+    }
+    
+    public func xmppStream(_ sender: XMPPStream, didSend iq: XMPPIQ) {
+        print("did send iq")
+        print(iq)
+        print("\n\n")
+    }
+    
+    public func xmppStream(_ sender: XMPPStream, didReceive iq: XMPPIQ) -> Bool {
+        print("did receive iq")
+        print(iq)
+        print("\n\n")
+        return true
     }
 }

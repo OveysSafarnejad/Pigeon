@@ -22,7 +22,7 @@ public protocol OneChatDelegate {
     func oneStreamDidDisconnect(_ sender: XMPPStream, withError error: NSError)
 }
 
-open class OneChat: NSObject, XMPPRoomDelegate {
+open class OneChat: NSObject {
     
     var delegate: OneChatDelegate?
     var window: UIWindow?
@@ -31,7 +31,7 @@ open class OneChat: NSObject, XMPPRoomDelegate {
     
     var xmppReconnect: XMPPReconnect?
     var xmppRosterStorage = XMPPRosterCoreDataStorage()
-    var xmppMuc : XMPPMUC?
+    //var xmppMuc : XMPPMUC?
     var xmppRoster: XMPPRoster?
     open var xmppLastActivity: XMPPLastActivity?
     var xmppvCardStorage: XMPPvCardCoreDataStorage?
@@ -88,14 +88,14 @@ open class OneChat: NSObject, XMPPRoomDelegate {
         #if !TARGET_IPHONE_SIMULATOR
         xmppStream!.enableBackgroundingOnSocket = true
         #endif
-
+        
         
         xmppReconnect = XMPPReconnect()
         
         
         //xmppRosterStorage = XMPPRosterCoreDataStorage()
         xmppRoster = XMPPRoster(rosterStorage: xmppRosterStorage)
-        xmppMuc = XMPPMUC()
+       // xmppMuc = XMPPMUC()
         xmppRoster!.autoFetchRoster = true;
         xmppRoster!.autoAcceptKnownPresenceSubscriptionRequests = true;
         xmppvCardStorage = XMPPvCardCoreDataStorage.sharedInstance()
@@ -122,7 +122,7 @@ open class OneChat: NSObject, XMPPRoomDelegate {
         xmppCapabilities!.activate(xmppStream!)
         xmppMessageDeliveryRecipts!.activate(xmppStream!)
         xmppLastActivity!.activate(xmppStream!)
-        xmppMuc!.activate(xmppStream!)
+       // xmppMuc!.activate(xmppStream!)
         
         // Add ourself as a delegate to anything we may be interested in
         xmppStream!.addDelegate(self, delegateQueue: DispatchQueue.main)
@@ -141,7 +141,7 @@ open class OneChat: NSObject, XMPPRoomDelegate {
         xmppStream?.hostName = Constants.ServerInfo.SERVER_HOST
         xmppStream?.hostPort = Constants.ServerInfo.SERVER_PORT
         
-        xmppMuc?.addDelegate(self, delegateQueue: DispatchQueue.main)
+        //xmppMuc?.addDelegate(self, delegateQueue: DispatchQueue.main)
         
         customCertEvaluation = true
     }
@@ -228,10 +228,10 @@ open class OneChat: NSObject, XMPPRoomDelegate {
             }
         }
     }
+    
 }
 
 // MARK: XMPPStream Delegate
-
 extension OneChat: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, socketDidConnect socket: GCDAsyncSocket) {
@@ -248,7 +248,7 @@ extension OneChat: XMPPStreamDelegate {
             settings[GCDAsyncSocketManuallyEvaluateTrust] = true
         }
     }
-
+    
     public func xmppStream(_ sender: XMPPStream, didReceiveTrust trust: SecTrust, completionHandler:
         @escaping XMPPStreamCompletionHandler) {
         let bgQueue = DispatchQueue.global(qos: .default)
@@ -268,7 +268,7 @@ extension OneChat: XMPPStreamDelegate {
     public func xmppStreamDidSecure(_ sender: XMPPStream) {
         //did secure
     }
-
+    
     public func xmppStreamDidConnect(_ sender: XMPPStream) {
         isXmppConnected = true
         
@@ -278,7 +278,7 @@ extension OneChat: XMPPStreamDelegate {
             //Handle error
         }
     }
-
+    
     public func xmppStreamDidAuthenticate(_ sender: XMPPStream) {
         streamDidAuthenticateCompletionBlock!(sender, nil)
         streamDidConnectCompletionBlock!(sender, nil)
@@ -290,7 +290,7 @@ extension OneChat: XMPPStreamDelegate {
         streamDidConnectCompletionBlock!(sender, error)
     }
     
-    public func xmppStreamDidDisconnect(_ sender: XMPPStream, withError error: Error?) {
+    public func xmppStreamDiduDisconnect(_ sender: XMPPStream, withError error: Error?) {
         delegate?.oneStreamDidDisconnect(sender, withError: error! as NSError)
     }
     
@@ -300,30 +300,7 @@ extension OneChat: XMPPStreamDelegate {
     }
     
     public func xmppStream(_ sender: XMPPStream, didNotRegister error: DDXMLElement) {
-        
     }
     
     
-    
-    
-    
-    
-    //MARK:- XMPPRomDelegate
-    public func xmppRoom(_ sender: XMPPRoom, didConfigure iqResult: XMPPIQ) {
-        
-    }
-    
-    public func xmppRoomDidCreate(_ sender: XMPPRoom) {
-        
-    }
-    
-    public func xmppRoomDidJoin(_ sender: XMPPRoom) {
-        
-    }
-    
-    public func xmppRoom(_ sender: XMPPRoom, didNotConfigure iqResult: XMPPIQ) {
-        
-    }
-    
-
 }

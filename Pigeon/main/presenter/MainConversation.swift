@@ -13,6 +13,7 @@ import XMPPFramework
 class MainConversation: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
+   
     @IBOutlet weak var mainConversationTableView: UITableView!
     private var conversations : [ConversationMapping] = []
     
@@ -35,7 +36,7 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
                         //do something
                     }))
                     self.present(alertController, animated: true, completion: nil)
-                }
+                } 
             }
         }
         
@@ -45,10 +46,7 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.mainConversationTableView.reloadData()
-        
-                OneRoom.createRoom("javadRoom", completionHandler: { (XMPPRoom) in
-        
-                })
+       
     }
     
     //MARK- tableview data source
@@ -89,6 +87,14 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
         self.mainConversationTableView.backgroundColor = .clear
         
         mainConversationTableView.register(UINib(nibName: "ConversationCellUITableViewCell", bundle: nil), forCellReuseIdentifier: "ConversationCell")
+    }
+    
+    
+    @IBAction func createGroup(_ sender: Any) {
+        
+        OneRoom.createRoom("ahmad group", delegate: nil) { (XMPPRoom) in
+            print("created")
+        }
     }
 }
 

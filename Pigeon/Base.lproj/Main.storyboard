@@ -119,15 +119,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ley-PY-6uP">
-                                <rect key="frame" x="0.0" y="89" width="414" height="724"/>
+                                <rect key="frame" x="0.0" y="89" width="414" height="548"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tWb-8V-opu">
+                                <rect key="frame" x="157" y="667" width="100" height="40"/>
+                                <color key="backgroundColor" red="0.039215686270000001" green="0.71289219879999999" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="B4P-Kj-Cuv"/>
+                                    <constraint firstAttribute="height" constant="40" id="PDz-gX-nSN"/>
+                                </constraints>
+                                <state key="normal" title="GP">
+                                    <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="createGroup:" destination="GtB-Ko-sO9" eventType="touchUpInside" id="cdg-X7-ost"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="tWb-8V-opu" firstAttribute="centerX" secondItem="mNs-kV-ltt" secondAttribute="centerX" id="AGI-mX-6zD"/>
                             <constraint firstItem="Ley-PY-6uP" firstAttribute="top" secondItem="f8U-qh-5XB" secondAttribute="top" constant="1" id="DeB-Pg-VIe"/>
+                            <constraint firstItem="f8U-qh-5XB" firstAttribute="bottom" secondItem="Ley-PY-6uP" secondAttribute="bottom" constant="176" id="P07-Yh-KI5"/>
+                            <constraint firstItem="tWb-8V-opu" firstAttribute="top" secondItem="Ley-PY-6uP" secondAttribute="bottom" constant="30" id="aTm-ff-lPV"/>
                             <constraint firstItem="Ley-PY-6uP" firstAttribute="trailing" secondItem="f8U-qh-5XB" secondAttribute="trailing" id="eav-yl-z0d"/>
-                            <constraint firstItem="Ley-PY-6uP" firstAttribute="bottom" secondItem="f8U-qh-5XB" secondAttribute="bottom" id="kcr-Fr-2b2"/>
                             <constraint firstItem="Ley-PY-6uP" firstAttribute="leading" secondItem="f8U-qh-5XB" secondAttribute="leading" id="rGz-I4-UK5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="f8U-qh-5XB"/>

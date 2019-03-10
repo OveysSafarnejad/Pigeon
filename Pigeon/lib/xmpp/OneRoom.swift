@@ -15,9 +15,10 @@ protocol OneRoomDelegate {
     //func onePresenceDidReceivePresence()
 }
 
-class OneRoom: NSObject, XMPPRoomDelegate {
-    var delegate: OneRoomDelegate?
+class OneRoom: NSObject {
     
+    var delegate: OneRoomDelegate?
+
     var didCreateRoomCompletionBlock: OneRoomCreationCompletionHandler?
     
     // MARK: Singleton
@@ -29,155 +30,131 @@ class OneRoom: NSObject, XMPPRoomDelegate {
     }
     
     class func createRoom(_ roomName: String, delegate: AnyObject? = nil, completionHandler completion:@escaping OneRoomCreationCompletionHandler) {
+        
+        
         sharedInstance.didCreateRoomCompletionBlock = completion
-       
-        let roomMemoryStorage = XMPPRoomMemoryStorage()
-        let domain = OneChat.sharedInstance.xmppStream!.myJID!.domain
+        let domain =  OneChat.sharedInstance.xmppStream!.myJID!.domain
         let roomJID = XMPPJID(string: "\(roomName)@muclight.\(domain)")
-        let xmppRoom = XMPPRoom(roomStorage: roomMemoryStorage!, jid: roomJID!, dispatchQueue: DispatchQueue.main)
-
-
-
+        let xmppRoom = XMPPRoomLight(roomLightStorage: nil, jid: roomJID!, roomname: roomName, dispatchQueue: DispatchQueue.main)
         xmppRoom.activate(OneChat.sharedInstance.xmppStream!)
         xmppRoom.addDelegate(self, delegateQueue: DispatchQueue.main)
-        xmppRoom.join(usingNickname: OneChat.sharedInstance.xmppStream!.myJID!.bare, history: nil, password: nil)
-//        xmppRoom.join(usingNickname: (XMPPJID(string: "oveys@localhost")?.bare)!, history: nil)
-        xmppRoom.fetchConfigurationForm()
-    }
-    
-    func xmppRoom(_ sender: XMPPRoom, didConfigure iqResult: XMPPIQ) {
+        xmppRoom.createRoomLight(withMembersJID: [XMPPJID(string: "ijpxs3blss@localhost")!])
         
-    }
-    
-    func xmppRoomDidCreate(_ sender: XMPPRoom) {
         
-    }
-    
-    
-    
-    func xmppRoom(_ sender: XMPPRoom, didNotConfigure iqResult: XMPPIQ) {
         
-    }
-    
-    
-    func xmppRoomDidJoin(_ sender: XMPPRoom) {
+        //        let id = OneChat.sharedInstance.xmppStream?.generateUUID
+        //        let iq = DDXMLElement(name: "iq")
+        //        iq.addAttribute(withName: "id", stringValue: id!)
+        //        iq.addAttribute(withName: "to", stringValue: "\(roomName)@muclight.\(domain)")
+        //        iq.addAttribute(withName: "type", stringValue: "set")
+        //        let query = DDXMLElement(name: "query")
+        //        let configuraton = DDXMLElement(name: "configuration")
+        //        configuraton.addChild(DDXMLElement(name: "roomname", stringValue: "testBYoveys"))
+        //        let occupants = DDXMLElement(name: "occupants")
+        //        let users = DDXMLElement(name: "user", stringValue: (XMPPJID(string: "ijpxs3blss@localhost")?.bare)!)
+        //        users.addAttribute(withName: "affiliation", stringValue: "member")
+        //        occupants.addChild(users)
+        //        query.addChild(configuraton)
+        //        query.addChild(occupants)
+        //        xmppRoom.setConfiguration([configuraton])
         
+        //        iq.addChild(query)
+        //        OneChat.sharedInstance.xmppStream?.send(iq)
+        
+        //        DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+        //            //
+        //            //           xmppRoom.configureRoom(usingOptions: nil)
+        //            //           xmppRoom.fetchConfigurationForm()
+        //            //           xmppRoom.fetchBanList()
+        //            //           xmppRoom.fetchMembersList()
+        //            //           xmppRoom.fetchModeratorsList()
+        //            //
+        //            xmppRoom.getConfiguration()
+        //        }
+
     }
+
     
 }
 
-/*extension OneRoom: XMPPRoomDelegate {
-    /**
-     * Invoked with the results of a request to fetch the configuration form.
-     * The given config form will look something like:
-     *
-     * <x xmlns='jabber:x:data' type='form'>
-     *   <title>Configuration for MUC Room</title>
-     *   <field type='hidden'
-     *           var='FORM_TYPE'>
-     *     <value>http://jabber.org/protocol/muc#roomconfig</value>
-     *   </field>
-     *   <field label='Natural-Language Room Name'
-     *           type='text-single'
-     *            var='muc#roomconfig_roomname'/>
-     *   <field label='Enable Public Logging?'
-     *           type='boolean'
-     *            var='muc#roomconfig_enablelogging'>
-     *     <value>0</value>
-     *   </field>
-     *   ...
-     * </x>
-     *
-     * The form is to be filled out and then submitted via the configureRoomUsingOptions: method.
-     *
-     * @see fetchConfigurationForm:
-     * @see configureRoomUsingOptions:
-     **/
+
+extension OneRoom: XMPPRoomLightDelegate {
     
-    func xmppRoomDidCreate(_ sender: XMPPRoom) {
-        //[xmppRoom fetchConfigurationForm];
-        print("room did create")
-        didCreateRoomCompletionBlock!(sender)
+    public func xmppRoomLight(_ sender: XMPPRoomLight, didCreateRoomLight iq: XMPPIQ) {
+        print("didCreateRoomLight")
     }
     
-    func xmppRoomDidLeave(_ sender: XMPPRoom!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToCreateRoomLight iq: XMPPIQ) {
+        print("didFailToCreateRoomLight")
     }
     
-    func xmppRoomDidJoin(_ sender: XMPPRoom!) {
-        print("room did join")
+    public func xmppRoomLight(_ sender: XMPPRoomLight, didFailToSetConfiguration iq: XMPPIQ) {
+        print("didFailToSetConfigurationRoomLight")
     }
     
-    func xmppRoomDidDestroy(_ sender: XMPPRoom!) {
-        //
+    public func xmppRoomLight(_ sender: XMPPRoomLight, didSetConfiguration iqResult: XMPPIQ) {
+        print("didSetConfigurationRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didFetchConfigurationForm configForm: DDXMLElement!) {
-        print("did fetch config \(configForm)")
+    func xmppRoomLight(_ sender: XMPPRoomLight, didAddUsers iqResult: XMPPIQ) {
+        print("didAddUsersRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, willSendConfiguration roomConfigForm: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToAddUsers iq: XMPPIQ) {
+        print("didFailToAddUsersRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didConfigure iqResult: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didLeaveRoomLight iq: XMPPIQ) {
+        print("didLeaveRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didNotConfigure iqResult: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didReceive message: XMPPMessage) {
+        print("didReceiveMessageRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, occupantDidJoin occupantJID: XMPPJID!, with presence: XMPPPresence!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToLeaveRoomLight iq: XMPPIQ) {
+        print("didFailToLeaveRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, occupantDidLeave occupantJID: XMPPJID!, with presence: XMPPPresence!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, roomDestroyed message: XMPPMessage) {
+         print("roomDestroyedRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, occupantDidUpdate occupantJID: XMPPJID!, with presence: XMPPPresence!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didDestroyRoomLight iqResult: XMPPIQ) {
+         print("didDestroyRoomLight")
     }
     
-    /**
-     * Invoked when a message is received.
-     * The occupant parameter may be nil if the message came directly from the room, or from a non-occupant.
-     **/
-    
-    func xmppRoom(_ sender: XMPPRoom!, didReceive message: XMPPMessage!, fromOccupant occupantJID: XMPPJID!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToDestroyRoomLight iq: XMPPIQ) {
+        print("didFailToDestroyRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didFetchBanList items: [Any]!) {
-        
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFetchMembersList iqResult: XMPPIQ) {
+        print("didFetchMembersListRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didNotFetchBanList iqError: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToFetchMembersList iq: XMPPIQ) {
+        print("didFailToFetchMembersListRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didFetchMembersList items: [Any]!) {
-        
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToGetConfiguration iq: XMPPIQ) {
+        print("didFailToGetConfigurationRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didNotFetchMembersList iqError: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didGetConfiguration iqResult: XMPPIQ) {
+        print("didGetConfigurationRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didFetchModeratorsList items: [Any]!) {
-        
+    func xmppRoomLight(_ sender: XMPPRoomLight, configurationChanged message: XMPPMessage) {
+        print("configurationChangedRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didNotFetchModeratorsList iqError: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didChangeAffiliations iqResult: XMPPIQ) {
+        print("didChangeAffiliationsRoomLight")
     }
     
-    func xmppRoom(_ sender: XMPPRoom!, didEditPrivileges iqResult: XMPPIQ!) {
-        //
+    func xmppRoomLight(_ sender: XMPPRoomLight, didFailToChangeAffiliations iq: XMPPIQ) {
+        print("didFailToChangeAffiliationsRoomLight")
     }
-    
-    func xmppRoom(_ sender: XMPPRoom!, didNotEditPrivileges iqError: XMPPIQ!) {
-        //
-    }
-}*/
+   
+}
+

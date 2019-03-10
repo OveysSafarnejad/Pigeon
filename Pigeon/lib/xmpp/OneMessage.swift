@@ -195,24 +195,25 @@ extension OneMessage: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         
-        
-        let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
-    
-        if !OneChats.knownUserForJid(jidStr:(user?.jidStr)!) {
-            OneChats.addUserToChatList(jidStr: (user?.jidStr)!)
-        }
-        
-        if message.isChatMessageWithBody {
-            OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user!)
-        } else {
-            
-            print(message)
-            //was composing
-            if let _ = message.forName("composing") {
-                OneMessage.sharedInstance.delegate?.oneStream(sender, userIsComposing: user!)
-            }
-        }
-        
+        print("here is didReceiveMessage : \n")
+        print(message)
+//        let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
+//    
+//        if !OneChats.knownUserForJid(jidStr:(user?.jidStr)!) {
+//            OneChats.addUserToChatList(jidStr: (user?.jidStr)!)
+//        }
+//        
+//        if message.isChatMessageWithBody {
+//            OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user!)
+//        } else {
+//            
+//            print(message)
+//            //was composing
+//            if let _ = message.forName("composing") {
+//                OneMessage.sharedInstance.delegate?.oneStream(sender, userIsComposing: user!)
+//            }
+//        }
+//        
         
     }
 }
