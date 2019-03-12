@@ -230,6 +230,8 @@ class ContactMenu: UIViewController {
     }
     
     func saveContactsToContext(contacts : [ContactMapping]) {
+        
+        //FIXME:- don't allow to duplicate contacts in core data
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate else {
                 return

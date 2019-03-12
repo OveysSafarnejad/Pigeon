@@ -14,6 +14,7 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
     var chatList = NSMutableArray()
     var chatListBare = NSMutableArray()
     var threadedChatList = NSMutableDictionary()
+    var conversationActor = ConversationActor()
     
     // MARK: Class function
     class var sharedInstance : OneChats {
@@ -203,6 +204,11 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
         if !knownUserForJid(jidStr: jidStr) {
             sharedInstance.chatList.add(OneRoster.userFromRosterForJID(jid: jidStr)!)
             sharedInstance.chatListBare.add(jidStr)
+            UserDefaults.standard.set(sharedInstance.chatListBare, forKey: "ConversationListBares")
+            //UserDefaults.standard.set(sharedInstance.chatList, forKey: "ConversationList")
+            //FIXME:- save this updated conversation list into the server repo
+            
+            sharedInstance.conversationActor.createOrUpdateConversationList(chatListBares: UserDefaults.standard.value(forKey: "ConversationListBares") as! [String])
         }
     }
     

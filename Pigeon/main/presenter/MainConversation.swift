@@ -13,7 +13,7 @@ import XMPPFramework
 class MainConversation: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
-   
+    
     @IBOutlet weak var mainConversationTableView: UITableView!
     private var conversations : [ConversationMapping] = []
     
@@ -46,7 +46,7 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.mainConversationTableView.reloadData()
-       
+        
     }
     
     //MARK- tableview data source
@@ -92,10 +92,13 @@ class MainConversation: UIViewController, UITableViewDataSource, UITableViewDele
     
     @IBAction func createGroup(_ sender: Any) {
         
-        OneRoom.createRoom("ahmad group", delegate: nil) { (XMPPRoom) in
-            print("created")
-        }
+//        OneRoom.createRoom("ahmad group", delegate: nil) { (XMPPRoom) in
+//            print("created")
+//        }
+
     }
+    
+    
 }
 
 

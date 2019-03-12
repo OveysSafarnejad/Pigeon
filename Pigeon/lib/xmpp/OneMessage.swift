@@ -195,25 +195,34 @@ extension OneMessage: XMPPStreamDelegate {
     
     public func xmppStream(_ sender: XMPPStream, didReceive message: XMPPMessage) {
         
-        print("here is didReceiveMessage : \n")
-        print(message)
-//        let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster())
-//    
-//        if !OneChats.knownUserForJid(jidStr:(user?.jidStr)!) {
-//            OneChats.addUserToChatList(jidStr: (user?.jidStr)!)
-//        }
-//        
-//        if message.isChatMessageWithBody {
-//            OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user!)
-//        } else {
-//            
-//            print(message)
-//            //was composing
-//            if let _ = message.forName("composing") {
-//                OneMessage.sharedInstance.delegate?.oneStream(sender, userIsComposing: user!)
-//            }
-//        }
-//        
+        print("\nhere is didReceiveMessage : ")
+        
+        if let user = OneChat.sharedInstance.xmppRosterStorage.user(for: message.from, xmppStream: OneChat.sharedInstance.xmppStream, managedObjectContext: OneRoster.sharedInstance.managedObjectContext_roster()) {
+            
+            //FIXME:- but still we can ussse message.fromStr instead of user.jidStr
+            //and the problem is control message handling (we don't want to add for example self user as an conversation)
+            
+            if !OneChats.knownUserForJid(jidStr:(user.jidStr)!) {
+                OneChats.addUserToChatList(jidStr: (user.jidStr)!)
+            }
+            
+            if message.isChatMessageWithBody {
+                
+                print("message is with chat body")
+                OneMessage.sharedInstance.delegate?.oneStream(sender, didReceiveMessage: message, from: user)
+                
+            } else {
+                
+                print("message is  not with chat body")
+                if let _ = message.forName("composing") {
+                    OneMessage.sharedInstance.delegate?.oneStream(sender, userIsComposing: user)
+                }
+                
+            }
+            
+        } else {
+            print(message)
+        }
         
     }
 }
