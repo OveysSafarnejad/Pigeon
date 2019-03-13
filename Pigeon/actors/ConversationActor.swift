@@ -27,14 +27,15 @@ class ConversationActor {
         for bare in chatListBares {
             
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Contact")
-            
             do {
-                var fetchedContacts = try context.fetch(fetchRequest)
                 
+                let fetchedContacts = try context.fetch(fetchRequest)
                 for fetched in fetchedContacts {
                     
-                    print(fetched.value(forKey: "username"))
-                    
+                    let fullUsername = fetched.value(forKey: "username") as! String + "@localhost"
+                    if(fullUsername == bare) {
+                        print("founded!")
+                    }
                 }
                 
             } catch let error as NSError {

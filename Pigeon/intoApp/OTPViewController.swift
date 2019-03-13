@@ -20,6 +20,7 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
     var passedPhoneNumber : String!
     var sendBtn: UIBarButtonItem!
     var aesSecretKey : String!
+
     
     override func viewDidLoad() {
         
@@ -81,22 +82,38 @@ class OTPViewController: UIViewController , UIGestureRecognizerDelegate , UIText
                                 if dictionary["secret"] != nil && dictionary["data"] != nil {
                                     let res = self.openResponce(response: dictionary)
                                     
-                                    if(res["username"] != nil && res["password"] != nil && res["domain"] != nil) {
-                                        
-                                        UserDefaults.standard.set(res["username"], forKey: "XMPPUser")
-                                        UserDefaults.standard.set(res["password"], forKey: "XMPPPassword")
-                                        UserDefaults.standard.set(res["domain"], forKey: "Domain")
-                                        
-                                        DispatchQueue.main.async { [unowned self] in
-                                            let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
-                                            self.navigationController?.present(appMain, animated: true, completion: nil)
-                                        }
-                                        
-                                    } else {
-                                        DispatchQueue.main.async { [unowned self] in
-                                            self.errorHandler(title: "Error!", message: "Can't connect, try again.")
+                                    if let isRegistered = res["isRegistered"] {
+                                        if (isRegistered == "false") {
+
+                                            DispatchQueue.main.async { [unowned self] in
+                                                let completeInfoVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CompleteInfoViewController") as! CompleteInfoViewController
+                                                self.navigationController?.pushViewController(completeInfoVC, animated: true)
+                                            }
+                                        } else {
+                                            
+                                            if(res["username"] != nil && res["password"] != nil && res["domain"] != nil) {
+                                                //FIXME:- add tokens to the client storage
+                                                UserDefaults.standard.set(res["username"], forKey: "XMPPUser")
+                                                UserDefaults.standard.set(res["password"], forKey: "XMPPPassword")
+                                                UserDefaults.standard.set(res["domain"], forKey: "Domain")
+                                                
+                                                
+                                                
+                                                DispatchQueue.main.async { [unowned self] in
+                                                    
+                                                    let appMain = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AppMainTabBar")
+                                                    self.navigationController?.present(appMain, animated: true, completion: nil)
+                                                }
+                                                
+                                            } else {
+                                                DispatchQueue.main.async { [unowned self] in
+                                                    self.errorHandler(title: "Error!", message: "Can't connect, try again.")
+                                                }
+                                            }
                                         }
                                     }
+                                    
+                                    
    
                                 } else {
                                     DispatchQueue.main.async { [unowned self] in
