@@ -15,7 +15,7 @@ class ConversationActor {
     
     var conversations : ConversationMapping?
     
-    func createOrUpdateConversationList(chatListBares : [String]){
+    func createOrUpdateConversationList(bare : String){
         
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -23,26 +23,42 @@ class ConversationActor {
         }
         
         let context = appDelegate.persistentContainer.viewContext
-        
-        for bare in chatListBares {
+        let contactFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Contact")
+        do {
             
-            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Contact")
-            do {
+            let fetchedContacts = try context.fetch(contactFetchRequest)
+            for contact in fetchedContacts {
                 
-                let fetchedContacts = try context.fetch(fetchRequest)
-                for fetched in fetchedContacts {
+                let fullUsername = contact.value(forKey: "username") as! String
+                if(fullUsername == bare) {
+                    //FIXME:- create or update a conversation
                     
-                    let fullUsername = fetched.value(forKey: "username") as! String
-                    if(fullUsername == bare) {
-                        //FIXME:- create or update a conversation
-                        
-                    }
+                    let conversationFetchReuest = NSFetchRequest<NSManagedObject>(entityName: "Conversation")
+                    let predicate = NSPredicate(format: "contact == %@", fullUsername)
+                    conversationFetchReuest.predicate = predicate
+                    let fetchedConversations = try context.fetch(conversationFetchReuest)
+                    
+//                    if fetchedConversations.count != 0 {
+//
+//                        for conversation in fetchedConversations {
+//                            //var contact = conversation.value(forKey: "contact")
+//                            if(findMatchedConversation()) {
+//                                print("some conversation with this contact exist.")
+//                            } else {
+//                                print("create new conversation.")
+//                            }
+//                        }
+//                    }
+                    
                 }
-                
-            } catch let error as NSError {
-                print("Could not fetch. \(error), \(error.userInfo)")
             }
             
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
         }
+    }
+    
+    func findMatchedConversation() -> Bool {
+        return false
     }
 }
