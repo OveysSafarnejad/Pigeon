@@ -32,9 +32,10 @@ class ConversationActor {
                 let fetchedContacts = try context.fetch(fetchRequest)
                 for fetched in fetchedContacts {
                     
-                    let fullUsername = fetched.value(forKey: "username") as! String + "@localhost"
+                    let fullUsername = fetched.value(forKey: "username") as! String
                     if(fullUsername == bare) {
-                        print("founded!")
+                        //FIXME:- create or update a conversation
+                        
                     }
                 }
                 

@@ -46,48 +46,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pigeon/lib/xmpp/OneMessage.swift"
-            timestampString = "574087690.284935"
+            filePath = "Pigeon/actors/ContactActor.swift"
+            timestampString = "574240692.936403"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "xmppStream(_:didReceive:)"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "saveContactsToContext(contacts:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Pigeon/actors/ConversationActor.swift"
-            timestampString = "574155564.772541"
+            filePath = "Pigeon/actors/ContactActor.swift"
+            timestampString = "574240738.999613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "createOrUpdateConversationList(chatListBares:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pigeon/intoApp/OTPViewController.swift"
-            timestampString = "574167982.447365"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "sendBtnTapped()"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "manageContact()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

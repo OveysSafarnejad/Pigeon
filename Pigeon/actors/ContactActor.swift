@@ -17,9 +17,76 @@ class ContactActor: UIViewController {
     
     
     
-    //var contactsNumbers : [String] = []
+    var contactsNumbers : [String] = []
     var contactWithAccount : [ContactMapping] = []
     
+    let store = CNContactStore()
+    var accessGrant : Bool = false
+    
+    func requestAccessToStore() {
+        
+        store.requestAccess(for: .contacts) { (granted, error) in
+            if let error = error {
+                print("failed to request access" , error)
+                return
+            }
+            
+            if(granted) {
+                self.accessGrant = granted
+                self.manageContact()
+            } else {
+                
+                let alertController = UIAlertController(title: "Sorry!", message: "can't access to contacts. please allow pigeon to access you contacts in setting.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (UIAlertAction) -> Void in
+                }))
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    
+    func manageContact() {
+        
+        if(self.accessGrant) {
+            
+            let keys = [CNContactGivenNameKey , CNContactFamilyNameKey , CNContactPhoneNumbersKey]
+            
+            let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+            do {
+                try store.enumerateContacts(with: request, usingBlock: { (contact, stopPointer) in
+                    for number in contact.phoneNumbers {
+                        var editing = number.value.stringValue.replacingOccurrences(of: " ", with: "")
+                        editing = editing.replacingOccurrences(of: "-", with: "")
+                        editing = editing.replacingOccurrences(of: "(", with: "")
+                        editing = editing.replacingOccurrences(of: ")", with: "")
+                        editing = editing.deletingPrefix("0")
+                        editing = editing.deletingPrefix("+98")
+                        if(!self.exist(number: editing)) {
+                            self.contactsNumbers.append(editing)
+                        }
+                        
+                    }
+                })
+            } catch {
+                print(error)
+            }
+        }
+        if (self.contactsNumbers.count != 0){
+            self.syncContactList(contactNumbers: self.contactsNumbers)
+        }
+    }
+    
+    
+    func exist(number : String) -> Bool {
+        var exist = false
+        for finded in contactsNumbers {
+            if number == finded {
+                exist = true
+                break
+            }
+        }
+        return exist
+    }
     
     
     func syncContactList(contactNumbers : [String]) {
@@ -69,7 +136,7 @@ class ContactActor: UIViewController {
                                         var singleContact = ContactMapping()
                                         for temp in res {
                                             
-                                            singleContact.username = temp["username"] as! String
+                                            singleContact.username = temp["username"] as! String + "@" + UserDefaults.standard.string(forKey: "Domain")!
                                             singleContact.mobile = temp["number"] as! String
                                             singleContact.status = temp["status"] as! String
                                             singleContact.appName = temp["appName"] as! String
