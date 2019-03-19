@@ -178,6 +178,10 @@ class ConversationMapping {
         }
     }
     
+    init() {
+        
+    }
+    
     
     init(conversationId : String , conversationType : ConversationType , conversationPicture : String , isMuted : Bool , isPinned : Bool , lastSeenDate : String , lastUpdate : String , lastMessageId : String , noMoreMessages : Bool , unreadCount : Int , hiddenConversation : Bool , lastMessageState : LastMessageState , draftMessage : String , messages : [MessageMapping] , contact : ContactMapping) {
         

@@ -208,7 +208,7 @@ open class OneChats: NSObject, NSFetchedResultsControllerDelegate {
             //UserDefaults.standard.set(sharedInstance.chatList, forKey: "ConversationList")
             //FIXME:- save this updated conversation list into the server repo
             
-            sharedInstance.conversationActor.createOrUpdateConversationList(chatListBares: UserDefaults.standard.value(forKey: "ConversationListBares") as! [String])
+            sharedInstance.conversationActor.createOrUpdateConversationList(bare: jidStr)
         }
     }
     

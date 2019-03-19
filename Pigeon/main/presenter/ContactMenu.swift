@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import CoreData
 
 
 class ContactMenu: UIViewController {
@@ -27,7 +28,7 @@ class ContactMenu: UIViewController {
     
     
     override func viewDidAppear(_ animated: Bool) {
-        self.contactActor.requestAccessToStore()
+        self.contactActor.requestAccessToStore() 
     }
 
     
