@@ -29,7 +29,7 @@ class ConversationActor {
             let fetchedContacts = try context.fetch(contactFetchRequest)
             for contact in fetchedContacts {
                 
-                sContact = createContact(sContact: sContact , contact: contact)
+                sContact = mapContact(sContact: sContact , contact: contact)
                 
                 if(sContact.username == bare) {
                     //FIXME:- create or update a conversation
@@ -43,10 +43,13 @@ class ConversationActor {
                         
                         // Update Existing Conversation
                         print("should update")
+                        var sConversation = ConversationMapping()
+                        sConversation = mapConversation(sConversation: sConversation, conversation: fetchedConversations.last!)
+                        
                     } else {
                         
                         // Create New Conversation
-                        print("should create")
+                        print("should create")
                         var nConversation : ConversationMapping = ConversationMapping()
                         nConversation = createConversation(nConversation: nConversation , contact: sContact)
                         saveConversation(conversation: nConversation)
@@ -67,7 +70,7 @@ class ConversationActor {
         return false
     }
     
-    func createContact(sContact : ContactMapping , contact : NSManagedObject) -> ContactMapping {
+    func mapContact(sContact : ContactMapping , contact : NSManagedObject) -> ContactMapping {
         
         sContact.appName = contact.value(forKey: "app_name") as! String
         sContact.mobile = contact.value(forKey: "mobile") as! String
@@ -78,11 +81,32 @@ class ConversationActor {
         return sContact
     }
     
+    func mapConversation(sConversation : ConversationMapping , conversation : NSManagedObject) -> ConversationMapping {
+        
+        //sConversation.contact = conversation.value(forKey: "contact") as! ContactMapping
+        sConversation.conversationId = conversation.value(forKey: "conversationId") as! String
+        sConversation.conversationPicture = conversation.value(forKey: "conversationPicture") as! String
+        //sConversation.conversationType = conversation.value(forKey: "conversationType") as! ConversationType
+        sConversation.draftMessage = conversation.value(forKey: "draftMessage") as! String
+        sConversation.hiddenConversation = (conversation.value(forKey: "hiddenConversation") != nil)
+        sConversation.isMuted = (conversation.value(forKey: "isMuted") != nil)
+        sConversation.isPinned = (conversation.value(forKey: "isPinned") != nil)
+        sConversation.lastMessageId = conversation.value(forKey: "lastMessageId") as! String
+        //sConversation.lastMessageState = conversation.value(forKey: "lastMessageState") as! LastMessageState
+        sConversation.lastSeenDate = conversation.value(forKey: "lastSeenDate") as! String
+        sConversation.lastUpdate = conversation.value(forKey: "lastUpdate") as! String
+        sConversation.noMoreMessage = (conversation.value(forKey: "noMoreMessages") != nil)
+        sConversation.unreadCount = conversation.value(forKey: "unreadCount") as! Int
+        //FIXME:- what about messages?
+        
+        return sConversation
+    }
+    
     func createConversation(nConversation : ConversationMapping , contact : ContactMapping) -> ConversationMapping {
         
         nConversation.contact = contact
         nConversation.conversationId = contact.username
-//        nConversation.conversationPicture = contact.picture
+        //nConversation.conversationPicture = contact.picture
         nConversation.draftMessage = ""
         nConversation.hiddenConversation = false
         nConversation.isMuted = false
